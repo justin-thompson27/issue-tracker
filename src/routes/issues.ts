@@ -1,6 +1,7 @@
 
 
 import { Router,Request,Response, NextFunction } from "express";
+import { error } from "node:console";
 
 
 
@@ -73,3 +74,24 @@ issuesRouter.post("/",(req: Request, res: Response) => //creates a new issue wit
 
 
   })
+
+
+  issuesRouter.delete("/:id",(req:Request,res: Response) =>
+  {
+
+
+    const issueIndex = issues.findIndex((i) => i.id === Number(req.params.id));
+    if (issueIndex === -1) {
+      return res.status(404).json({error: "no issue with that id exists"})
+    }
+    issues.splice(issueIndex,1);
+    res.status(204);
+
+
+  }
+  
+  
+  
+  
+  
+  )
