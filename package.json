@@ -3,6 +3,7 @@
     "debug": "^4.4.3"
   },
   "devDependencies": {
-    "@types/debug": "^4.1.13"
+    "@types/debug": "^4.1.13",
+    "tsx": "^4.23.13"
   }
 }

@@ -1,13 +1,13 @@
 import express from "express";
-import { issuesRouter } from "./routes/issues";
+import { issuesRouter } from "./routes/issues.js";
 import debug from "debug";
-import { errorHandler } from "./middleware/errorHandler";
-import { requestLogger } from "./middleware/logger";
+import { errorHandler } from "./middleware/errorHandler.js";
+import { requestLogger } from "./middleware/logger.js";
 
 const logger = debug("issue-track:index");
 const app = express(); //creates express object for application
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
  
 app.use(requestLogger); //logs the kind of request and url so a post request from issues would be POST/issues/7
