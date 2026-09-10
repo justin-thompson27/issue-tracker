@@ -76,16 +76,20 @@ issuesRouter.post("/",(req: Request, res: Response) => //creates a new issue wit
   })
 
 
-  issuesRouter.delete("/:id",(req:Request,res: Response) =>
+  issuesRouter.delete("/:id",(req:Request,res: Response , next: NextFunction) =>
   {
 
-
-    const issueIndex = issues.findIndex((i) => i.id === Number(req.params.id));
+    try {
+      const issueIndex = issues.findIndex((i) => i.id === Number(req.params.id));
     if (issueIndex === -1) {
       return res.status(404).json({error: "no issue with that id exists"})
     }
     issues.splice(issueIndex,1);
     res.status(204);
+    } catch (err) {
+      next(err)
+    }
+    
 
 
   }
