@@ -3,8 +3,8 @@ import { issuesRouter } from "./routes/issues.js";
 import debug from "debug";
 import { errorHandler } from "./middleware/errorHandler.js";
 import { requestLogger } from "./middleware/logger.js";
+const logger = debug("issue-tracker:index");
 
-const logger = debug("issue-track:index");
 const app = express(); //creates express object for application
 
 const PORT = process.env.PORT || 3000;
