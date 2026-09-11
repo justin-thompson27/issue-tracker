@@ -20,7 +20,7 @@ app.get("/health", //this is a request handler it gets called for every GET requ
   res.json( {status: "ok"}); //converts the json body of the webpage to this message
 });
 app.use("/issues",issuesRouter); //assigns the router to issues so if the link is /issues it will go to teh issues route
-app.use(express.static(path.join(import.meta.dirname, "../frontend/dist")));
+app.use(express.static(path.join(import.meta.dirname, "../vite-project/frontend/dist")));
 // app.get("*", (req, res) => {
 //   res.sendFile(path.join(import.meta.dirname, "../frontend/dist/index.html"));
 // });
