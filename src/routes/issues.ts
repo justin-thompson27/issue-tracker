@@ -2,7 +2,7 @@
 
 import { Router,Request,Response, NextFunction } from "express";
 import { Issue, issues , getNextId } from "../data/issue";
-import { listIssues , getIssueByID , createIssue } from "../controllers/issueController";
+import { listIssues , getIssueByID , createIssue, updateIssue } from "../controllers/issueController";
 
 
 
@@ -14,6 +14,8 @@ issuesRouter.get("/", (listIssues));
 issuesRouter.get("/:id",(getIssueByID));
   
 issuesRouter.post("/",(createIssue))  //creates a new issue with a status of open and priority of medium if not set
+
+issuesRouter.patch("/:id", updateIssue);
  
 
   export default issuesRouter;
