@@ -85,7 +85,7 @@ issuesRouter.post("/",(req: Request, res: Response) => //creates a new issue wit
       return res.status(404).json({error: "no issue with that id exists"}) //if the id number doesn't exist returns 404
     }
     issues.splice(issueIndex,1); //removes id at the index if found
-    res.status(204).json({}); //successful removal
+    res.status(204).send(); //successful removal
     } catch (err) {
       next(err)
     }
