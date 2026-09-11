@@ -5,7 +5,11 @@
   "main": "index.js",
   
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc && npm install --prefix ../vite-project/frontend && npm run build --prefix ../vite-project/frontend",
+    "start": "node dist/index.js"
+
+
   },
   "repository": {
     "type": "git",
@@ -20,7 +24,8 @@
   },
   "homepage": "https://github.com/justin-thompson27/issue-tracker#readme",
   "dependencies": {
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+     "debug": "^4.4.3"
   }, 
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -29,6 +34,7 @@
     "eslint": "^10.9.1",
     "eslint-config-prettier": "^10.1.8",
     "prettier": "^3.9.6",
+    "@types/debug": "^4.1.13",
     "tsx": "^4.23.13",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.69.0"
