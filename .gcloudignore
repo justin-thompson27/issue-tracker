@@ -1,0 +1,10 @@
+
+# .gcloudignore
+.git
+.gitignore
+.env
+node_modules/
+frontend/node_modules/
+frontend/dist/
+dist/
+
