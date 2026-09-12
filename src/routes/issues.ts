@@ -19,7 +19,7 @@ issuesRouter.post("/",(createIssue))  //creates a new issue with a status of ope
 issuesRouter.patch("/:id", updateIssue);
  
 
-  })
+  
 
 
   issuesRouter.delete("/:id",(req:Request,res: Response , next: NextFunction) =>

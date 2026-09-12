@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch --env-file=.env src/index.ts"
+    "dev": "tsx watch --env-file=.env src/index.ts",
+    "build": "tsc && npm install --prefix ../vite-project/frontend && npm run build --prefix ../vite-project/frontend"
   },
   "dependencies": {
     "debug": "^4.4.3",
@@ -12,7 +13,7 @@
   "devDependencies": {
     "@types/debug": "^4.1.13",
     "@types/express": "^5.0.6",
-    "@types/node": "^26.4.1",
+    "@types/node": "^26.5.1",
     "tsx": "^4.23.13",
     "typescript": "^6.0.3"
   }
