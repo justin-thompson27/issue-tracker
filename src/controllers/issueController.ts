@@ -60,3 +60,36 @@ export function createIssue(req: Request, res: Response)
       
 
 }
+
+type PatchIssueBody = Partial<Pick<Issue, "title" | "description" | "status" | "priority">>;
+
+export function updateIssue(req: Request<{ id: string }, Issue | { error: string }, PatchIssueBody>, res: Response)
+{
+  const updates = req.body;
+
+  if (!updates || typeof updates !== "object" || Array.isArray(updates) || Object.keys(updates).length === 0) {
+    return res.status(400).json({ error: "Request body must be a non-empty object" });
+  }
+
+  const allowedFields = ["title", "description", "status", "priority"];
+  if (Object.keys(updates).some((field) => !allowedFields.includes(field))) {
+    return res.status(400).json({ error: "Only title, description, status, and priority can be updated" });
+  }
+
+  if (
+    (updates.title !== undefined && typeof updates.title !== "string") ||
+    (updates.description !== undefined && typeof updates.description !== "string") ||
+    (updates.status !== undefined && !["open", "in-progress", "closed"].includes(updates.status)) ||
+    (updates.priority !== undefined && !["low", "medium", "high"].includes(updates.priority))
+  ) {
+    return res.status(400).json({ error: "One or more update fields are invalid" });
+  }
+
+  const issue = issues.find((currentIssue) => currentIssue.id === Number(req.params.id));
+  if (!issue) {
+    return res.status(404).json({ error: "Issue not found" });
+  }
+
+  Object.assign(issue, updates);
+  return res.json(issue);
+}
