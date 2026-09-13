@@ -93,3 +93,23 @@ export function updateIssue(req: Request<{ id: string }, Issue | { error: string
   Object.assign(issue, updates);
   return res.json(issue);
 }
+
+export function deleteIssue(req:Request,res: Response , next: NextFunction)
+  {
+    try {
+      const issueIndex = issues.findIndex((i) => i.id === Number(req.params.id)); //searches the id
+    if (issueIndex === -1) {
+      return res.status(404).json({ error: "Issue not found"}) //if the id number doesn't exist returns 404
+    }
+    issues.splice(issueIndex,1); //removes id at the index if found
+    res.status(204).send(); //successful removal
+    } catch (err) {
+      next(err)
+    }
+  }
+  
+  
+  
+  
+  
+  )
