@@ -1,5 +1,5 @@
 import { Request,Response, NextFunction } from "express";
-import { Issue,issues, getNextId } from "../data/issue";
+import { Issue,issues, getNextId } from "../data/issue.js";
 
 
 export function listIssues(req: Request, res: Response)
@@ -112,4 +112,4 @@ export function deleteIssue(req:Request,res: Response , next: NextFunction)
   
   
   
-  )
+  
