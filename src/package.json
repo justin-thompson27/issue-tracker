@@ -3,18 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  
   "scripts": {
-  "dev": "tsx watch --env-file=.env src/index.ts",
-  "test": "echo \"Error: no test specified\" && exit 1",
-  "build": "tsc && npm install --prefix ./vite-project/frontend && npm run build --prefix ./vite-project/frontend",
-  "start": "node dist/index.js"
-},
-
-
-
-
-  
+    "dev": "tsx watch --env-file=.env src/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc && npm install --prefix ../vite-project/frontend && npm run build --prefix ../vite-project/frontend",
+    "start": "node dist/index.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/justin-thompson27/issue-tracker.git"
@@ -29,7 +23,8 @@
   "homepage": "https://github.com/justin-thompson27/issue-tracker#readme",
   "dependencies": {
     "debug": "^4.4.3",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "mongodb": "^7.6.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

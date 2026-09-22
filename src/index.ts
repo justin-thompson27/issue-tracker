@@ -4,6 +4,8 @@ import debug from "debug";
 import { errorHandler } from "./middleware/errorHandler.js";
 import { requestLogger } from "./middleware/logger.js";
 import path from "node:path";
+import { getDb } from "./db.js";
+import { get } from "node:http";
 
 
 const logger = debug("issue-tracker:index");
@@ -28,7 +30,7 @@ app.use(express.static(path.join(import.meta.dirname, "../vite-project/frontend/
 app.use(errorHandler); // swaps to the error handler if a error is thrown
 
 
-
+await getDb();
 app.listen(PORT, 
   () => 
 

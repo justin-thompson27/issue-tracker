@@ -2,7 +2,7 @@
 
 import { Router,Request,Response, NextFunction } from "express";
 import { error } from "node:console";
-import { Issue, issues , getNextId } from "../data/issue";
+import { Issue} from "../data/issue";
 import { listIssues , getIssueByID , createIssue, updateIssue, deleteIssue } from "../controllers/issueController.js";
 
 
