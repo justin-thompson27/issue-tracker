@@ -9,8 +9,6 @@ export async function  getDb()
 {
   await client.connect();
   db = client.db(process.env.DB_NAME as string);
-   console.log("MONGODB HOST:", client.options.hosts);
-  console.log("MONGODB DATABASE:", db.databaseName);
   return db ;
 }
 
