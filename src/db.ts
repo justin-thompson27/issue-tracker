@@ -8,7 +8,9 @@ let db: Db;
 export async function  getDb()
 {
   await client.connect();
-  db = client.db("issueTracker");
+  db = client.db(process.env.DB_NAME as string);
+   console.log("MONGODB HOST:", client.options.hosts);
+  console.log("MONGODB DATABASE:", db.databaseName);
   return db ;
 }
 

@@ -7,6 +7,14 @@ import { ObjectId } from "mongodb";
 export async function listIssues(req: Request, res: Response)
 {
     const issues = getIssuesCollection();
+    const results = await issues.find({}).toArray();
+
+      console.log("DATABASE: issueTracker");
+    console.log("COLLECTION: issues");
+    console.log("COUNT:", results.length);
+    console.log("TITLES:",
+      results.map((issue) => issue.title)
+    );
     res.json(await issues.find({}).toArray()); // finds all the issues in the issue array and showings them at /issues
     
 }
