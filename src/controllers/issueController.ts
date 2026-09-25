@@ -1,6 +1,7 @@
 import { Request,Response, NextFunction } from "express";
 import { Issue} from "../data/issue.js";
 import { getIssuesCollection } from "../db.js";
+import { CreateIssueInput , UpdateIssueInput } from "../schema/issueSchemas.js";
 import { ObjectId } from "mongodb";
 
 
@@ -9,12 +10,7 @@ export async function listIssues(req: Request, res: Response)
     const issues = getIssuesCollection();
     const results = await issues.find({}).toArray();
 
-      console.log("DATABASE: issueTracker");
-    console.log("COLLECTION: issues");
-    console.log("COUNT:", results.length);
-    console.log("TITLES:",
-      results.map((issue) => issue.title)
-    );
+    
     res.json(await issues.find({}).toArray()); // finds all the issues in the issue array and showings them at /issues
     
 }
@@ -47,29 +43,30 @@ export async function getIssueByID(req: Request, res: Response , next: NextFunct
 
 
 
-export async function createIssue(req: Request, res: Response)
+export async function createIssue(req: Request, res: Response , next: NextFunction)
 {
-   const{title,description,priority = "medium"} = req.body;
-      
-  
-      if (!title) { //if title is null return and require a title
-         return res.status(400).json({ error: "title is required"});
-        
-      }
-      else{ //creates the new issue
-        
-        const issues = getIssuesCollection();
-        const newIssue = await issues.insertOne({title,
-        description: description || " ",
-        status: "open",
-        priority 
-      })
-      
-      return res.status(201).json(newIssue);
-      }
-     
-   
-      
+  try{
+    const input = req.body as CreateIssueInput;
+    const newIssue = {
+      ...input,
+      status: "open" as const,
+      classification: "unclassified" as const,
+      author: req.user, //has to be .user instead of .body becasue the client could put whoever they want if we use req.body so req.user is better since the serer will set it instead of the json body from the client
+      createdOn: new Date(),
+      comments: [],
+      testCases: [],
+      timeLog: [],
+    };
+    const issues = getIssuesCollection();
+    const result = await issues.insertOne(newIssue);
+    return res.status(201).json(newIssue);
+    
+  }
+  catch(err)
+  {
+    next(err);
+
+  }   
 
 }
 
@@ -86,15 +83,10 @@ export  async function updateIssue(req: Request, res: Response, next: NextFuncti
     }
 
     try {
-       const updates = req.body;
-       if ((updates.title !== undefined && typeof updates.title !== "string") ||
-          (updates.description !== undefined && typeof updates.description !== "string") ||
-          (updates.status !== undefined && !["open", "in-progress", "closed"].includes(updates.status)) ||
-          (updates.priority !== undefined && !["low", "medium", "high"].includes(updates.priority))) 
-       {
-         return res.status(400).json({ error: "One or more update fields are invalid" });
-       }
+       const updates = req.body as UpdateIssueInput;
+      
        const issueToUpdate = await getIssuesCollection().findOneAndUpdate({_id : objectId},{$set : updates}, { returnDocument: "after" }) //if u dont add returnDocument it returns the old doc without the update
+       
         if (!issueToUpdate) {
           return res.status(404).json({ error: "Issue not found" });
         }

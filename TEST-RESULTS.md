@@ -436,3 +436,18 @@ My Results:
 404
 no issue with that id
 
+Day 25 Results 
+
+http://localhost:3000/issues/
+{
+  "title": "1234564",
+  "author": "adadfaf",
+  "description": "Issue description",
+  "stepsToReproduce": "Step 1, Step 2",
+  "priority": "high"
+}
+201 
+{
+    "acknowledged": true,
+    "insertedId": "6ab6df32debac92c32ca5d5b"
+}
