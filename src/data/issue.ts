@@ -17,7 +17,7 @@ export interface Issue { //interface containing possible issues
   fixed?: FixInfo;
 }
 
-export interface IssueUserRef {
+ export  interface IssueUserRef {
   userId: string;
   fullName: string;
 }
