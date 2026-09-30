@@ -1,8 +1,10 @@
 import { Request,Response, NextFunction } from "express";
 import { Issue} from "../data/issue.js";
 import { getIssuesCollection } from "../db.js";
-import { CreateIssueInput , UpdateIssueInput, SetStatusInput , ClassifyIssueInput , AssignIssueInput} from "../schema/issueSchemas.js";
-import { ObjectId } from "mongodb";
+import { CreateIssueInput , UpdateIssueInput, SetStatusInput , ClassifyIssueInput , AssignIssueInput, AddCommentInput} from "../schema/issueSchemas.js";
+import { ObjectId, ReturnDocument } from "mongodb";
+import { randomUUID } from "crypto";
+import { error } from "console";
 
 function parseId(req: Request , res : Response ) : ObjectId | undefined{
 
@@ -206,9 +208,60 @@ export async function deleteIssue(req:Request,res: Response , next: NextFunction
     }catch(error){
       next(error);
     }
-   
+  
+  }
 
-  
-  
-  
+
+  export async function addComment(req: Request, res: Response, next: NextFunction) 
+  {
+    const objectId = parseId(req, res);
+    if(!objectId) return;
+    try{
+      const {comment} = req.body as AddCommentInput;
+      const newComment = {
+        _id: randomUUID(),
+        userId: req.user.userId,
+        fullName: req.user.fullName,
+        comment,
+        createdOn: new Date(),
+      };
+      const issues = getIssuesCollection();
+      const result = await issues.findOneAndUpdate(
+        { _id: objectId},
+        {$push: {comments: newComment}},
+        {returnDocument: "after"}
+      );
+      if(!result)
+      {
+        return res.status(404).json({error: "Issue not found"});
+      }
+      res.status(201).json(result);
+    }
+    catch(error){
+      next(error);
+    }
+
+  }
+
+  export async function deleteComment(req: Request , res : Response, next: NextFunction) 
+  {
+    const objectId = parseId(req,res);
+    if (!objectId) return;
+    try {
+       const commentId = req.params.commentId as string;
+      const issues = getIssuesCollection();
+      const result = await issues.findOneAndUpdate(
+        {_id: objectId},
+        {$pull: {comments: {_id: commentId}}},
+        {returnDocument: "after"},
+      )
+    if (!result) {
+      return res.status(404).json({error: "Issue not found"});
+    }
+     res.json(result);
+    } catch (error) {
+      next(error);
+    }
+    
+   
   }
