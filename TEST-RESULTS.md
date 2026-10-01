@@ -418,9 +418,9 @@ no response body
 GET /issues/2
 —
 My Results:
-404
+400
 {
-    "error": "Issue not found"
+    "error": "Invalid issue id"
 }
 404
 confirms the delete above actually happened
@@ -436,7 +436,12 @@ My Results:
 404
 no issue with that id
 
+
+Lab 04-01
 Day 25 Results 
+
+
+1 POST a valid issue body — confirm 201, and confirm the response's author matches your hardcoded placeholder, not anything you sent.
 
 http://localhost:3000/issues/
 {
@@ -450,4 +455,551 @@ http://localhost:3000/issues/
 {
     "acknowledged": true,
     "insertedId": "6ab6df32debac92c32ca5d5b"
+}
+{
+    "_id": "6ab6dff5d39531dcbd4a2e11",
+    "title": "1234564",
+    "description": "Issue description",
+    "stepsToReproduce": "Step 1, Step 2",
+    "priority": "high",
+    "status": "open",
+    "classification": "unclassified",
+    "author": {
+        "userId": "6aad780ce470879405ff14af",
+        "fullName": "Miyabi Hoshimi"
+    },
+    "createdOn": "2026-09-25T20:56:21.752Z",
+    "comments": [],
+    "testCases": [],
+    "timeLog": []
+}
+
+2 POST a body missing a required field (e.g. no title) — confirm 400 with a ValidationFailed error and a details array naming the missing field, not a 500 or a silently-created issue.
+
+http://localhost:3000/issues/
+{
+  "title": "1234564",
+  "author": "adadfaf",
+  "description": "Issue description",
+  "stepsToReproduce": "Step 1, Step 2",
+  
+}
+400
+
+{
+    "error": "ValidationFailed",
+    "details": [
+        {
+            "path": "priority",
+            "message": "Invalid option: expected one of \"low\"|\"medium\"|\"high\""
+        }
+    ]
+}
+
+3 POST a body that includes an author field of your own choosing — confirm the response's author is still your placeholder, not what you sent. This is the actual security property today's work exists to guarantee.
+
+
+http://localhost:3000/issues/
+{
+  "title": "1234564",
+  "author": "adadfaf",
+  "description": "Issue description",
+  "stepsToReproduce": "Step 1, Step 2",
+  "priority": "high"
+}
+201
+inserted json result 
+{
+    "title": "1234564",
+    "description": "Issue description",
+    "stepsToReproduce": "Step 1, Step 2",
+    "priority": "high",
+    "status": "open",
+    "classification": "unclassified",
+    "author": {
+        "userId": "6aad780ce470879405ff14af",
+        "fullName": "Miyabi Hoshimi"
+    },
+    "createdOn": "2026-09-25T20:56:21.752Z",
+    "comments": [],
+    "testCases": [],
+    "timeLog": [],
+    "_id": "6ab6dff5d39531dcbd4a2e11"
+}
+
+
+
+
+4 PATCH an existing issue with just one field (e.g. { "priority": "high" }) — confirm only that field changed, and every other field (including comments, testCases, timeLog) is untouched.
+
+
+http://localhost:3000/issues/6ab6dff5d39531dcbd4a2e11
+
+{ "priority": "low" }
+
+200
+
+{
+    "_id": "6ab6dff5d39531dcbd4a2e11",
+    "title": "1234564",
+    "description": "Issue description",
+    "stepsToReproduce": "Step 1, Step 2",
+    "priority": "low",
+    "status": "open",
+    "classification": "unclassified",
+    "author": {
+        "userId": "6aad780ce470879405ff14af",
+        "fullName": "Miyabi Hoshimi"
+    },
+    "createdOn": "2026-09-25T20:56:21.752Z",
+    "comments": [],
+    "testCases": [],
+    "timeLog": []
+}
+
+LAB 04-02
+Day 26
+
+1
+PATCH /issues/:id/status with a valid value (e.g. { "status": "in-progress" }) — confirm 200, and confirm the response's status actually changed.
+
+http://localhost:3000/issues/6aad7bbb36e840ccf9e3cca2/status
+{"status":"closed"}
+200
+{
+    "_id": "6aad7bbb36e840ccf9e3cca2",
+    "title": "Payment processing failed",
+    "description": "Server 500 error upon processing payment",
+    "stepsToReproduce": " 1. Click the payment button",
+    "status": "closed",
+    "priority": "high",
+    "classification": "approved",
+    "createdOn": "2026-09-18T17:58:19.071Z",
+    "author": {
+        "userId": "6aad780ce470879405ff14af",
+        "fullName": "Miyabi Hoshimi"
+    },
+    "assignedTo": {
+        "userId": "6aad783119cdc5d65b974899",
+        "fullName": "Claret Flintstone"
+    }
+}
+
+2 PATCH /issues/:id/status with an invalid value (e.g. { "status": "done" }) — confirm 400 with a ValidationFailed error naming status, not a 500 or a silent no-op.
+
+http://localhost:3000/issues/6aad7bbb36e840ccf9e3cca2/status
+{"status":"done"}
+400
+{
+    "error": "ValidationFailed",
+    "details": [
+        {
+            "path": "status",
+            "message": "Invalid option: expected one of \"open\"|\"in-progress\"|\"closed\""
+        }
+    ]
+}
+
+3 Repeat both of the above for PATCH /issues/:id/classify, using a valid and an invalid classification value.
+
+
+http://localhost:3000/issues/6ab2babce85627dca1b48e94/classify
+{"classification":"unapproved"}
+200
+{
+    "_id": "6ab2babce85627dca1b48e94",
+    "title": "Constantly loading",
+    "description": "Page loading freezes at 99%",
+    "stepsToReproduce": " 1.Open the website from any source",
+    "status": "closed",
+    "priority": "low",
+    "classification": "unapproved",
+    "createdOn": "2026-09-22T17:28:28.267Z",
+    "author": {
+        "userId": "6aac45663c299e5342891895",
+        "fullName": "Justin Thompson"
+    },
+    "assignedTo": {
+        "userId": "13414",
+        "fullName": "Alice"
+    },
+    "comments": [
+        {
+            "id": "6aac4c59b8a607a4a4349492 ",
+            "userId": " 6aac4ccba693bf19b2f497d6",
+            "fullName": "Alice Hyacinth ",
+            "comment": "Please fix as soon as possible the site is unusable ",
+            "createdOn": "2026-09-22T17:28:28.267Z"
+        }
+    ],
+    "testCases": [
+        {
+            "_id": "6ab2b9b66581bb16fd574056",
+            "userId": "6aac4b7760201c5ed2bcea92",
+            "passed": false,
+            "createdOn": "2026-09-22T17:28:28.267Z"
+        }
+    ],
+    "timeLog": [
+        {
+            "userId": "6aac4b7760201c5ed2bcea92",
+            "hoursWorked": 30,
+            "passed": false,
+            "loggedOn": "2026-09-22T17:28:28.267Z"
+        }
+    ]
+}
+
+
+http://localhost:3000/issues/6ab2babce85627dca1b48e94/classify
+{"classification":"done"}
+400
+{
+    "error": "ValidationFailed",
+    "details": [
+        {
+            "path": "classification",
+            "message": "Invalid option: expected one of \"unclassified\"|\"approved\"|\"unapproved\"|\"duplicate\""
+        }
+    ]
+}
+
+
+4 PATCH /issues/:id/assign with a complete { "userId", "fullName" } body — confirm the response's assignedTo matches exactly what you sent, unlike author's fixed placeholder from Lab 04-01.
+
+
+
+http://localhost:3000/issues/6ab2babce85627dca1b48e94/assign
+{
+  "userId": "2552552525252",
+  "fullName": "Alice Thymefield"
+}
+200
+{
+    "_id": "6ab2babce85627dca1b48e94",
+    "title": "Constantly loading",
+    "description": "Page loading freezes at 99%",
+    "stepsToReproduce": " 1.Open the website from any source",
+    "status": "closed",
+    "priority": "low",
+    "classification": "unapproved",
+    "createdOn": "2026-09-22T17:28:28.267Z",
+    "author": {
+        "userId": "6aac45663c299e5342891895",
+        "fullName": "Justin Thompson"
+    },
+    "assignedTo": {
+        "userId": "2552552525252",
+        "fullName": "Alice Thymefield"
+    },
+    "comments": [
+        {
+            "id": "6aac4c59b8a607a4a4349492 ",
+            "userId": " 6aac4ccba693bf19b2f497d6",
+            "fullName": "Alice Hyacinth ",
+            "comment": "Please fix as soon as possible the site is unusable ",
+            "createdOn": "2026-09-22T17:28:28.267Z"
+        }
+    ],
+    "testCases": [
+        {
+            "_id": "6ab2b9b66581bb16fd574056",
+            "userId": "6aac4b7760201c5ed2bcea92",
+            "passed": false,
+            "createdOn": "2026-09-22T17:28:28.267Z"
+        }
+    ],
+    "timeLog": [
+        {
+            "userId": "6aac4b7760201c5ed2bcea92",
+            "hoursWorked": 30,
+            "passed": false,
+            "loggedOn": "2026-09-22T17:28:28.267Z"
+        }
+    ]
+}
+
+
+5 PATCH /issues/:id/assign with fullName missing — confirm 400. Then update TEST-RESULTS.md with today's results.
+
+
+http://localhost:3000/issues/6ab2babce85627dca1b48e94/assign
+{
+  "userId": "2552552525252"
+  
+}
+400
+{
+    "error": "ValidationFailed",
+    "details": [
+        {
+            "path": "fullName",
+            "message": "Invalid input: expected string, received undefined"
+        }
+    ]
+}
+
+
+Day 28 Lab 04-03
+
+POST /issues/:id/comments with a valid comment — confirm 201, and confirm the new comment's userId and fullName match your placeholder identity.
+ http://localhost:3000/issues/6ab2babce85627dca1b48e94/comments
+{"comment": "This is a test comment."}
+201
+{
+    "_id": "6ab2babce85627dca1b48e94",
+    "title": "Constantly loading",
+    "description": "Page loading freezes at 99%",
+    "stepsToReproduce": " 1.Open the website from any source",
+    "status": "closed",
+    "priority": "low",
+    "classification": "unapproved",
+    "createdOn": "2026-09-22T17:28:28.267Z",
+    "author": {
+        "userId": "6aac45663c299e5342891895",
+        "fullName": "Justin Thompson"
+    },
+    "assignedTo": {
+        "userId": "2552552525252",
+        "fullName": "Alice Thymefield"
+    },
+    "comments": [
+        {
+            "id": "6aac4c59b8a607a4a4349492 ",
+            "userId": " 6aac4ccba693bf19b2f497d6",
+            "fullName": "Alice Hyacinth ",
+            "comment": "Please fix as soon as possible the site is unusable ",
+            "createdOn": "2026-09-22T17:28:28.267Z"
+        },
+        {
+            "_id": "868a3c6e-f480-4f15-835f-c1a46cd5593a",
+            "userId": "6aad780ce470879405ff14af",
+            "fullName": "Miyabi Hoshimi",
+            "comment": "I want the error message to be blue not red2",
+            "createdOn": "2026-09-30T19:31:34.957Z"
+        },
+        {
+            "_id": "f0b1e082-fb90-421c-888c-cfc5d91a4939",
+            "userId": "6aad780ce470879405ff14af",
+            "fullName": "Miyabi Hoshimi",
+            "comment": "This is a test comment.",
+            "createdOn": "2026-10-01T20:43:52.033Z"
+        }
+    ],
+    "testCases": [
+        {
+            "_id": "6ab2b9b66581bb16fd574056",
+            "userId": "6aac4b7760201c5ed2bcea92",
+            "passed": false,
+            "createdOn": "2026-09-22T17:28:28.267Z"
+        }
+    ],
+    "timeLog": [
+        {
+            "userId": "6aac4b7760201c5ed2bcea92",
+            "hoursWorked": 30,
+            "passed": false,
+            "loggedOn": "2026-09-22T17:28:28.267Z"
+        }
+    ]
+}
+
+
+2 POST /issues/:id/comments with an empty comment string — confirm 400 with a ValidationFailed error.
+
+http://localhost:3000/issues/6ab2babce85627dca1b48e94/comments
+{"comment": ""}
+
+{}
+400
+{
+    "error": "ValidationFailed",
+    "details": [
+        {
+            "path": "comment",
+            "message": "comment is required"
+        }
+    ]
+}
+
+3 DELETE /issues/:id/comments/:commentId for a comment that exists — confirm 200, and confirm that comment (and only that one) is gone from the response.
+
+http://localhost:3000/issues/6ab2babce85627dca1b48e94/comments/f0b1e082-fb90-421c-888c-cfc5d91a4939
+200
+{
+    "_id": "6ab2babce85627dca1b48e94",
+    "title": "Constantly loading",
+    "description": "Page loading freezes at 99%",
+    "stepsToReproduce": " 1.Open the website from any source",
+    "status": "closed",
+    "priority": "low",
+    "classification": "unapproved",
+    "createdOn": "2026-09-22T17:28:28.267Z",
+    "author": {
+        "userId": "6aac45663c299e5342891895",
+        "fullName": "Justin Thompson"
+    },
+    "assignedTo": {
+        "userId": "2552552525252",
+        "fullName": "Alice Thymefield"
+    },
+    "comments": [
+        {
+            "id": "6aac4c59b8a607a4a4349492 ",
+            "userId": " 6aac4ccba693bf19b2f497d6",
+            "fullName": "Alice Hyacinth ",
+            "comment": "Please fix as soon as possible the site is unusable ",
+            "createdOn": "2026-09-22T17:28:28.267Z"
+        },
+        {
+            "_id": "868a3c6e-f480-4f15-835f-c1a46cd5593a",
+            "userId": "6aad780ce470879405ff14af",
+            "fullName": "Miyabi Hoshimi",
+            "comment": "I want the error message to be blue not red2",
+            "createdOn": "2026-09-30T19:31:34.957Z"
+        }
+    ],
+    "testCases": [
+        {
+            "_id": "6ab2b9b66581bb16fd574056",
+            "userId": "6aac4b7760201c5ed2bcea92",
+            "passed": false,
+            "createdOn": "2026-09-22T17:28:28.267Z"
+        }
+    ],
+    "timeLog": [
+        {
+            "userId": "6aac4b7760201c5ed2bcea92",
+            "hoursWorked": 30,
+            "passed": false,
+            "loggedOn": "2026-09-22T17:28:28.267Z"
+        }
+    ]
+}
+
+4 POST /issues/:id/test-cases — confirm 201, and confirm the new test case's passed starts false.
+
+
+http://localhost:3000/issues/6ab2babce85627dca1b48e94/test-cases
+201
+{
+    "_id": "6ab2babce85627dca1b48e94",
+    "title": "Constantly loading",
+    "description": "Page loading freezes at 99%",
+    "stepsToReproduce": " 1.Open the website from any source",
+    "status": "closed",
+    "priority": "low",
+    "classification": "unapproved",
+    "createdOn": "2026-09-22T17:28:28.267Z",
+    "author": {
+        "userId": "6aac45663c299e5342891895",
+        "fullName": "Justin Thompson"
+    },
+    "assignedTo": {
+        "userId": "2552552525252",
+        "fullName": "Alice Thymefield"
+    },
+    "comments": [
+        {
+            "id": "6aac4c59b8a607a4a4349492 ",
+            "userId": " 6aac4ccba693bf19b2f497d6",
+            "fullName": "Alice Hyacinth ",
+            "comment": "Please fix as soon as possible the site is unusable ",
+            "createdOn": "2026-09-22T17:28:28.267Z"
+        },
+        {
+            "_id": "868a3c6e-f480-4f15-835f-c1a46cd5593a",
+            "userId": "6aad780ce470879405ff14af",
+            "fullName": "Miyabi Hoshimi",
+            "comment": "I want the error message to be blue not red2",
+            "createdOn": "2026-09-30T19:31:34.957Z"
+        }
+    ],
+    "testCases": [
+        {
+            "_id": "6ab2b9b66581bb16fd574056",
+            "userId": "6aac4b7760201c5ed2bcea92",
+            "passed": false,
+            "createdOn": "2026-09-22T17:28:28.267Z"
+        },
+        {
+            "_id": "ce953d0d-f56a-4d6c-b335-a220442a72fa",
+            "userId": "6aad780ce470879405ff14af",
+            "passed": false,
+            "createdOn": "2026-10-01T20:50:42.089Z"
+        }
+    ],
+    "timeLog": [
+        {
+            "userId": "6aac4b7760201c5ed2bcea92",
+            "hoursWorked": 30,
+            "passed": false,
+            "loggedOn": "2026-09-22T17:28:28.267Z"
+        }
+    ]
+}
+
+
+5
+PATCH /issues/:id/test-cases/:testCaseId with { "passed": true } — confirm 200, and confirm only that test case changed. Then update TEST-RESULTS.md with today's results.
+
+http://localhost:3000/issues/6ab2babce85627dca1b48e94/test-cases/ce953d0d-f56a-4d6c-b335-a220442a72fa
+
+{"passed": true}
+200
+{
+    "_id": "6ab2babce85627dca1b48e94",
+    "title": "Constantly loading",
+    "description": "Page loading freezes at 99%",
+    "stepsToReproduce": " 1.Open the website from any source",
+    "status": "closed",
+    "priority": "low",
+    "classification": "unapproved",
+    "createdOn": "2026-09-22T17:28:28.267Z",
+    "author": {
+        "userId": "6aac45663c299e5342891895",
+        "fullName": "Justin Thompson"
+    },
+    "assignedTo": {
+        "userId": "2552552525252",
+        "fullName": "Alice Thymefield"
+    },
+    "comments": [
+        {
+            "id": "6aac4c59b8a607a4a4349492 ",
+            "userId": " 6aac4ccba693bf19b2f497d6",
+            "fullName": "Alice Hyacinth ",
+            "comment": "Please fix as soon as possible the site is unusable ",
+            "createdOn": "2026-09-22T17:28:28.267Z"
+        },
+        {
+            "_id": "868a3c6e-f480-4f15-835f-c1a46cd5593a",
+            "userId": "6aad780ce470879405ff14af",
+            "fullName": "Miyabi Hoshimi",
+            "comment": "I want the error message to be blue not red2",
+            "createdOn": "2026-09-30T19:31:34.957Z"
+        }
+    ],
+    "testCases": [
+        {
+            "_id": "6ab2b9b66581bb16fd574056",
+            "userId": "6aac4b7760201c5ed2bcea92",
+            "passed": false,
+            "createdOn": "2026-09-22T17:28:28.267Z"
+        },
+        {
+            "_id": "ce953d0d-f56a-4d6c-b335-a220442a72fa",
+            "userId": "6aad780ce470879405ff14af",
+            "passed": true,
+            "createdOn": "2026-10-01T20:50:42.089Z"
+        }
+    ],
+    "timeLog": [
+        {
+            "userId": "6aac4b7760201c5ed2bcea92",
+            "hoursWorked": 30,
+            "passed": false,
+            "loggedOn": "2026-09-22T17:28:28.267Z"
+        }
+    ]
 }

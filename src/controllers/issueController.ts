@@ -1,7 +1,7 @@
 import { Request,Response, NextFunction } from "express";
 import { Issue} from "../data/issue.js";
 import { getIssuesCollection } from "../db.js";
-import { CreateIssueInput , UpdateIssueInput, SetStatusInput , ClassifyIssueInput , AssignIssueInput, AddCommentInput} from "../schema/issueSchemas.js";
+import { CreateIssueInput , UpdateIssueInput, SetStatusInput , ClassifyIssueInput , AssignIssueInput, AddCommentInput , SetTestCaseResultInput} from "../schema/issueSchemas.js";
 import { ObjectId, ReturnDocument } from "mongodb";
 import { randomUUID } from "crypto";
 import { error } from "console";
@@ -16,7 +16,6 @@ function parseId(req: Request , res : Response ) : ObjectId | undefined{
     return undefined;
   }
 }
-
 
 export async function listIssues(req: Request, res: Response)
 {
@@ -50,10 +49,6 @@ export async function getIssueByID(req: Request, res: Response , next: NextFunct
   }
   
 }
- 
-
-
-
 
 export async function createIssue(req: Request, res: Response , next: NextFunction)
 {
@@ -81,7 +76,6 @@ export async function createIssue(req: Request, res: Response , next: NextFuncti
   }   
 
 }
-
 
 
 export  async function updateIssue(req: Request, res: Response, next: NextFunction)
@@ -136,7 +130,7 @@ export async function deleteIssue(req:Request,res: Response , next: NextFunction
     }
   
 
-  }
+}
   
   
   export async function setStatus(req: Request, res: Response, next: NextFunction) {
@@ -161,7 +155,7 @@ export async function deleteIssue(req:Request,res: Response , next: NextFunction
     }
   
   
-  }
+}
   
   
   export async function setClassify(req: Request, res: Response, next: NextFunction) {
@@ -186,7 +180,7 @@ export async function deleteIssue(req:Request,res: Response , next: NextFunction
     }
   
   
-  }
+}
   
 
   export async function assignIssue(req: Request, res: Response, next : NextFunction) {
@@ -209,7 +203,7 @@ export async function deleteIssue(req:Request,res: Response , next: NextFunction
       next(error);
     }
   
-  }
+}
 
 
   export async function addComment(req: Request, res: Response, next: NextFunction) 
@@ -241,7 +235,7 @@ export async function deleteIssue(req:Request,res: Response , next: NextFunction
       next(error);
     }
 
-  }
+}
 
   export async function deleteComment(req: Request , res : Response, next: NextFunction) 
   {
@@ -264,4 +258,53 @@ export async function deleteIssue(req:Request,res: Response , next: NextFunction
     }
     
    
+}
+
+export async function addTestCase(req: Request, res: Response , next: NextFunction) {
+  const objectId = parseId(req,res);
+  if(!objectId) return;
+  try {
+    const newTestCase = {
+       _id: randomUUID(),
+       userId: req.user.userId,
+       passed: false,
+       createdOn: new Date(),
+    };
+    const issues = getIssuesCollection();
+    const result = await issues.findOneAndUpdate(
+      {_id: objectId},
+      {$push: {testCases: newTestCase}},
+      {returnDocument: "after"},
+
+    )
+    if (!result) {
+      return res.status(404).json({error: "Issue not found"});
+    }
+    res.status(201).json(result);
+  } catch (error) {
+    next(error);
   }
+  
+}
+
+export async function setTestCaseResult(req: Request, res: Response , next: NextFunction) {
+  const objectId = parseId(req, res);
+  if (!objectId) return;
+  try {
+    const testCaseId = req.params.testCaseId as string;
+    const {passed} = req.body as SetTestCaseResultInput;
+    const issues = getIssuesCollection();
+    const result = await issues.findOneAndUpdate(
+      {_id: objectId},
+      {$set: {"testCases.$[tc].passed": passed}}, //change the test case with the matching test id and changed its passed value to the one from the request body
+      {arrayFilters: [{"tc._id": testCaseId}], returnDocument: "after"}, // changes a test case onl if the tc._id is equal to the testCaseId from the req url id 
+      
+    );
+    if (!result) {
+      return res.status(404).json({error: "Issue not found"});
+    }
+    res.json(result);
+  } catch (error) {
+    next(error);
+  }  
+}
