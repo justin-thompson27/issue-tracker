@@ -35,10 +35,22 @@ export const setTestCaseResultSchema = z.object(
   }
 )
 
+
+
+export const listIssuesQuerySchema = z.object({
+  classification: z.enum(["unclassified", "approved", "unapproved", "duplicate"]).optional(),
+  status: z.enum(["open", "in-progress", "closed"]).optional(),
+   priority: z.enum(["low", "medium", "high"]).optional(),
+   assignedTo: z.string().optional(),
+   sort: z.enum(["createdOn", "-createdOn", "priority", "-priority" ]).optional(),
+    q: z.string().optional(),
+})
+
 export type UpdateIssueInput = z.infer<typeof updateIssueSchema>// this type will be used in the controllers function for update
 export type CreateIssueInput = z.infer<typeof createIssueSchema>// this type will be used in the controllers function for create
 export type SetStatusInput = z.infer<typeof setStatusSchema>// this type will be used in the controllers function for set status
 export type ClassifyIssueInput = z.infer<typeof classifyIssueSchema>// this type will be used in the controllers function for classify issue
 export type AssignIssueInput = z.infer<typeof assignIssueSchema>// this type will be used in the controllers function for assign issue
 export type AddCommentInput = z.infer<typeof addCommentSchema>// this type will be used in the controllers function for add comment
-export type SetTestCaseResultInput = z.infer<typeof setTestCaseResultSchema> //t
+export type SetTestCaseResultInput = z.infer<typeof setTestCaseResultSchema> // thi
+export type ListIssuesQuery = z.infer<typeof listIssuesQuerySchema>

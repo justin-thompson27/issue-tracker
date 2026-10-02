@@ -1,7 +1,9 @@
 import {Request, Response, NextFunction} from "express";
-import { ZodType} from "zod";
+import { error } from "node:console";
+import path from "node:path";
+import { object, ZodType} from "zod";
 
-export function validateBody(schema: ZodType) //takes an argument of a zod schema 
+export function validateBody(schema: ZodType) //takes an argument of a zod schema this is a factory function because it is a function that returns a function
 {
     return(req: Request, res: Response, next: NextFunction) => //returns the express request/response function 
     {
@@ -22,4 +24,31 @@ export function validateBody(schema: ZodType) //takes an argument of a zod schem
       req.body = result.data;
       next();
     };
+}
+
+
+
+export function validateQuery(schema: ZodType)
+{
+  return(req: Request, res: Response , next: NextFunction) =>{
+  const result = schema.safeParse(req.query);
+  if (!result.success) {
+    return res.status(400).json(
+      {
+        error: "ValidationFailed",
+        details: result.error.issues.map((issue) => ({
+          path: issue.path.join("."),
+          message: issue.message,
+
+        })),
+      });
+  }
+  Object.defineProperty(req,"query",{ //selects the request object query property 
+    value: result.data, //sets the value of query to the result's data
+    writable: true, //allows the value of query to be changed later 
+    configurable: true, //the definition of this property can be deleted or modified 
+    enumerable: true, // controls if the property of the object are displayed
+  });
+  next();
+};
 }

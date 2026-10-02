@@ -1,10 +1,12 @@
 import { Request,Response, NextFunction } from "express";
 import { Issue} from "../data/issue.js";
 import { getIssuesCollection } from "../db.js";
-import { CreateIssueInput , UpdateIssueInput, SetStatusInput , ClassifyIssueInput , AssignIssueInput, AddCommentInput , SetTestCaseResultInput} from "../schema/issueSchemas.js";
-import { ObjectId, ReturnDocument } from "mongodb";
+import { CreateIssueInput , UpdateIssueInput, SetStatusInput , ClassifyIssueInput , AssignIssueInput, AddCommentInput , SetTestCaseResultInput ,ListIssuesQuery} from "../schema/issueSchemas.js";
+import { ObjectId, ReturnDocument , Filter , Document } from "mongodb";
 import { randomUUID } from "crypto";
 import { error } from "console";
+import { text } from "stream/consumers";
+import { title } from "process";
 
 function parseId(req: Request , res : Response ) : ObjectId | undefined{
 
@@ -182,7 +184,6 @@ export async function deleteIssue(req:Request,res: Response , next: NextFunction
   
 }
   
-
   export async function assignIssue(req: Request, res: Response, next : NextFunction) {
     const objectId = parseId(req, res);
     if(!objectId) return;
@@ -205,8 +206,7 @@ export async function deleteIssue(req:Request,res: Response , next: NextFunction
   
 }
 
-
-  export async function addComment(req: Request, res: Response, next: NextFunction) 
+export async function addComment(req: Request, res: Response, next: NextFunction) 
   {
     const objectId = parseId(req, res);
     if(!objectId) return;
@@ -307,4 +307,42 @@ export async function setTestCaseResult(req: Request, res: Response , next: Next
   } catch (error) {
     next(error);
   }  
+}
+
+function escapeRegex(input : string): string 
+{
+ return input.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+}
+
+export async function listIssuesQuery(req:Request , res: Response, next: NextFunction) {
+  try {
+    const query = req.query as unknown as ListIssuesQuery;
+    const filter: Record<string, unknown> = {};
+    if (query.status) filter.status =query.status;
+    if (query.priority) filter.priority = query. priority;
+    if (query.classification) filter.classification;
+    if (query.assignedTo) filter["assignedTo.UserId"] = query.assignedTo;
+
+    if (query.q) {
+      const pipeline: Document[] = [
+        {
+          $search: { 
+            index: "default",
+             text: {query: query.q, path: ["title","description"]}
+            } 
+        }
+      ];
+      if (Object.keys(filter).length > 0) pipeline.push({ $match: filter });
+      if (query.sort) {
+        const descending = query.sort.startsWith("-");
+        const field = descending ? query.sort.slice(1) : query.sort;
+        pipeline.push({ $sort: { [field]: descending ? -1 : 1 } });
+      }
+      }
+      }
+   catch(error) {
+    
+  }
+  
 }
