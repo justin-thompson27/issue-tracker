@@ -42,8 +42,11 @@ export const listIssuesQuerySchema = z.object({
   status: z.enum(["open", "in-progress", "closed"]).optional(),
    priority: z.enum(["low", "medium", "high"]).optional(),
    assignedTo: z.string().optional(),
+   q: z.string().optional(),
    sort: z.enum(["createdOn", "-createdOn", "priority", "-priority" ]).optional(),
-    q: z.string().optional(),
+   page: z.coerce.number().int().min(1).default(1),
+   limit: z.coerce.number().int().min(1).max(50).default(20),
+    
 })
 
 export type UpdateIssueInput = z.infer<typeof updateIssueSchema>// this type will be used in the controllers function for update

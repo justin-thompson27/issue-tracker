@@ -9,6 +9,7 @@ export async function  getDb()
 {
   await client.connect();
   db = client.db(process.env.DB_NAME as string);
+  await db.collection("issues").createIndex({status: 1, createdOn: -1});
   return db ;
 }
 

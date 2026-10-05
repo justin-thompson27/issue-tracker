@@ -317,8 +317,10 @@ function escapeRegex(input : string): string
 
 export async function listIssuesQuery(req:Request , res: Response, next: NextFunction) {
   try {
+    const issues= getIssuesCollection();
     const query = req.query as unknown as ListIssuesQuery;
     const filter: Record<string, unknown> = {};
+    const skip = (query.page -1) * query.limit;
     if (query.status) filter.status =query.status;
     if (query.priority) filter.priority = query. priority;
     if (query.classification) filter.classification;
@@ -339,7 +341,19 @@ export async function listIssuesQuery(req:Request , res: Response, next: NextFun
         const field = descending ? query.sort.slice(1) : query.sort;
         pipeline.push({ $sort: { [field]: descending ? -1 : 1 } });
       }
+      pipeline.push({$skip: skip}, {$limit: query.limit});
+      
+      return res.json(await issues.aggregate(pipeline).toArray());
       }
+      const cursor = issues.find(filter);
+      if (query.sort) {
+        const descending = query.sort.startsWith("-");
+        const field = descending ? query.sort.slice(1) : query.sort;
+        cursor.sort({[field]: descending ? -1 : 1});
+
+      }
+      cursor.skip(skip).limit(query.limit);
+      res.json(await cursor.toArray());
       }
    catch(error) {
     
