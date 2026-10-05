@@ -1003,3 +1003,877 @@ http://localhost:3000/issues/6ab2babce85627dca1b48e94/test-cases/ce953d0d-f56a-4
         }
     ]
 }
+
+day 30 LAB 04-04
+
+1 GET /issues?status=open — confirm every result actually has status: "open".
+
+200 
+[
+    {
+        "_id": "6abd5aed75d4c7d96309e8c3",
+        "title": "12341415153131afagaghaahah564",
+        "description": "Issue description",
+        "stepsToReproduce": "Step 4, Step 5",
+        "priority": "high",
+        "status": "open",
+        "classification": "unclassified",
+        "author": {
+            "userId": "6aad780ce470879405ff14af",
+            "fullName": "Miyabi Hoshimi"
+        },
+        "createdOn": "2026-09-30T18:54:37.825Z",
+        "comments": [],
+        "testCases": [
+            {
+                "_id": "117cff42-055c-4b6b-abf8-0945644a6340",
+                "userId": "6aad780ce470879405ff14af",
+                "passed": false,
+                "createdOn": "2026-10-01T20:22:32.135Z"
+            },
+            {
+                "_id": "ed4ce8ea-856b-49ff-85ec-b368c9c5d792",
+                "userId": "6aad780ce470879405ff14af",
+                "passed": true,
+                "createdOn": "2026-10-01T20:22:52.836Z"
+            }
+        ],
+        "timeLog": []
+    },
+    {
+        "_id": "6ab6dff5d39531dcbd4a2e11",
+        "title": "1234564",
+        "description": "Issue description",
+        "stepsToReproduce": "Step 1, Step 2",
+        "priority": "high",
+        "status": "open",
+        "classification": "unclassified",
+        "author": {
+            "userId": "6aad780ce470879405ff14af",
+            "fullName": "Miyabi Hoshimi"
+        },
+        "createdOn": "2026-09-25T20:56:21.752Z",
+        "comments": [],
+        "testCases": [],
+        "timeLog": []
+    },
+    {
+        "_id": "6ab6df32debac92c32ca5d5b",
+        "title": "1234564",
+        "description": "Issue description",
+        "stepsToReproduce": "Step 1, Step 2",
+        "priority": "high",
+        "status": "open",
+        "classification": "unclassified",
+        "author": {
+            "userId": "6aad780ce470879405ff14af",
+            "fullName": "Miyabi Hoshimi"
+        },
+        "createdOn": "2026-09-25T20:53:06.788Z",
+        "comments": [],
+        "testCases": [],
+        "timeLog": []
+    },
+    {
+        "_id": "6ab6de07836256d67905f955",
+        "title": "closed issue42244 test",
+        "description": "Issue description",
+        "stepsToReproduce": "Step 1, Step 2",
+        "priority": "high",
+        "status": "open",
+        "classification": "unclassified",
+        "author": {
+            "userId": "6aad780ce470879405ff14af",
+            "fullName": "Miyabi Hoshimi"
+        },
+        "createdOn": "2026-09-25T20:48:07.879Z",
+        "comments": [],
+        "testCases": [],
+        "timeLog": []
+    },
+    {
+        "_id": "6ab6dcf75b2943128f64ed44",
+        "title": "123",
+        "description": "Issue description",
+        "stepsToReproduce": "Step 1, Step 2",
+        "priority": "high",
+        "status": "open",
+        "classification": "unclassified",
+        "author": {
+            "userId": "6aad780ce470879405ff14af",
+            "fullName": "Miyabi Hoshimi"
+        },
+        "createdOn": "2026-09-25T20:43:35.275Z",
+        "comments": [],
+        "testCases": [],
+        "timeLog": []
+    },
+    {
+        "_id": "6ab6d39f32e4830ce7b3bd14",
+        "title": "turkey",
+        "description": "Issue description",
+        "stepsToReproduce": "Step 1, Step 2",
+        "priority": "high",
+        "status": "open",
+        "classification": "unclassified",
+        "author": {
+            "userId": "6aad780ce470879405ff14af",
+            "fullName": "Miyabi Hoshimi"
+        },
+        "createdOn": "2026-09-25T20:03:43.291Z",
+        "comments": [],
+        "testCases": [],
+        "timeLog": []
+    },
+    {
+        "_id": "6aad8f5e36e840ccf9e3cca5",
+        "title": "Constantly loading",
+        "description": "Page loading freezes at 99%",
+        "stepsToReproduce": " 1.Open the website from any source",
+        "status": "open",
+        "priority": "low",
+        "classification": "unclassified",
+        "createdOn": "2026-09-18T19:22:06.797Z",
+        "author": {
+            "userId": "6aac45663c299e5342891895",
+            "fullName": "Justin Thompson"
+        },
+        "assignedTo": {
+            "userId": "6aac4b7760201c5ed2bcea92",
+            "fullName": "Bob Bobbingson"
+        },
+        "comments": [
+            {
+                "id": "6aac4c59b8a607a4a4349492 ",
+                "userId": " 6aac4ccba693bf19b2f497d6",
+                "fullName": "Alice Hyacinth ",
+                "comment": "Please fix as soon as possible the site is unusable ",
+                "createdOn": "2026-09-18T19:22:06.797Z"
+            }
+        ],
+        "testCases": [
+            {
+                "_id": null,
+                "userId": null,
+                "passed": null,
+                "createdOn": "2026-09-18T19:22:06.797Z"
+            }
+        ],
+        "timeLog": [
+            {
+                "userId": " ",
+                "hoursWorked": null,
+                "passed": null,
+                "loggedOn": null
+            }
+        ],
+        "fixed": {
+            "fixedBy": {
+                "userId": null,
+                "fullName": null
+            },
+            "fixedOnVersion": null,
+            "fixedOnDate": null
+        }
+    },
+    {
+        "_id": "6ab1a5eded6c39e542accc1d",
+        "title": "Page failing to load",
+        "description": "Page infinitely loads over and over again",
+        "status": "open",
+        "priority": "low"
+    }
+]
+
+2 GET /issues?status=open&priority=high — confirm every result matches both filters at once, not just one.
+200 
+[
+    {
+        "_id": "6abd5aed75d4c7d96309e8c3",
+        "title": "12341415153131afagaghaahah564",
+        "description": "Issue description",
+        "stepsToReproduce": "Step 4, Step 5",
+        "priority": "high",
+        "status": "open",
+        "classification": "unclassified",
+        "author": {
+            "userId": "6aad780ce470879405ff14af",
+            "fullName": "Miyabi Hoshimi"
+        },
+        "createdOn": "2026-09-30T18:54:37.825Z",
+        "comments": [],
+        "testCases": [
+            {
+                "_id": "117cff42-055c-4b6b-abf8-0945644a6340",
+                "userId": "6aad780ce470879405ff14af",
+                "passed": false,
+                "createdOn": "2026-10-01T20:22:32.135Z"
+            },
+            {
+                "_id": "ed4ce8ea-856b-49ff-85ec-b368c9c5d792",
+                "userId": "6aad780ce470879405ff14af",
+                "passed": true,
+                "createdOn": "2026-10-01T20:22:52.836Z"
+            }
+        ],
+        "timeLog": []
+    },
+    {
+        "_id": "6ab6dff5d39531dcbd4a2e11",
+        "title": "1234564",
+        "description": "Issue description",
+        "stepsToReproduce": "Step 1, Step 2",
+        "priority": "high",
+        "status": "open",
+        "classification": "unclassified",
+        "author": {
+            "userId": "6aad780ce470879405ff14af",
+            "fullName": "Miyabi Hoshimi"
+        },
+        "createdOn": "2026-09-25T20:56:21.752Z",
+        "comments": [],
+        "testCases": [],
+        "timeLog": []
+    },
+    {
+        "_id": "6ab6df32debac92c32ca5d5b",
+        "title": "1234564",
+        "description": "Issue description",
+        "stepsToReproduce": "Step 1, Step 2",
+        "priority": "high",
+        "status": "open",
+        "classification": "unclassified",
+        "author": {
+            "userId": "6aad780ce470879405ff14af",
+            "fullName": "Miyabi Hoshimi"
+        },
+        "createdOn": "2026-09-25T20:53:06.788Z",
+        "comments": [],
+        "testCases": [],
+        "timeLog": []
+    },
+    {
+        "_id": "6ab6de07836256d67905f955",
+        "title": "closed issue42244 test",
+        "description": "Issue description",
+        "stepsToReproduce": "Step 1, Step 2",
+        "priority": "high",
+        "status": "open",
+        "classification": "unclassified",
+        "author": {
+            "userId": "6aad780ce470879405ff14af",
+            "fullName": "Miyabi Hoshimi"
+        },
+        "createdOn": "2026-09-25T20:48:07.879Z",
+        "comments": [],
+        "testCases": [],
+        "timeLog": []
+    },
+    {
+        "_id": "6ab6dcf75b2943128f64ed44",
+        "title": "123",
+        "description": "Issue description",
+        "stepsToReproduce": "Step 1, Step 2",
+        "priority": "high",
+        "status": "open",
+        "classification": "unclassified",
+        "author": {
+            "userId": "6aad780ce470879405ff14af",
+            "fullName": "Miyabi Hoshimi"
+        },
+        "createdOn": "2026-09-25T20:43:35.275Z",
+        "comments": [],
+        "testCases": [],
+        "timeLog": []
+    },
+    {
+        "_id": "6ab6d39f32e4830ce7b3bd14",
+        "title": "turkey",
+        "description": "Issue description",
+        "stepsToReproduce": "Step 1, Step 2",
+        "priority": "high",
+        "status": "open",
+        "classification": "unclassified",
+        "author": {
+            "userId": "6aad780ce470879405ff14af",
+            "fullName": "Miyabi Hoshimi"
+        },
+        "createdOn": "2026-09-25T20:03:43.291Z",
+        "comments": [],
+        "testCases": [],
+        "timeLog": []
+    }
+]
+
+3 GET /issues?sort=-createdOn — confirm results come back newest-first.
+200
+[
+    {
+        "_id": "6abd5aed75d4c7d96309e8c3",
+        "title": "12341415153131afagaghaahah564",
+        "description": "Issue description",
+        "stepsToReproduce": "Step 4, Step 5",
+        "priority": "high",
+        "status": "open",
+        "classification": "unclassified",
+        "author": {
+            "userId": "6aad780ce470879405ff14af",
+            "fullName": "Miyabi Hoshimi"
+        },
+        "createdOn": "2026-09-30T18:54:37.825Z",
+        "comments": [],
+        "testCases": [
+            {
+                "_id": "117cff42-055c-4b6b-abf8-0945644a6340",
+                "userId": "6aad780ce470879405ff14af",
+                "passed": false,
+                "createdOn": "2026-10-01T20:22:32.135Z"
+            },
+            {
+                "_id": "ed4ce8ea-856b-49ff-85ec-b368c9c5d792",
+                "userId": "6aad780ce470879405ff14af",
+                "passed": true,
+                "createdOn": "2026-10-01T20:22:52.836Z"
+            }
+        ],
+        "timeLog": []
+    },
+    {
+        "_id": "6ab6dff5d39531dcbd4a2e11",
+        "title": "1234564",
+        "description": "Issue description",
+        "stepsToReproduce": "Step 1, Step 2",
+        "priority": "high",
+        "status": "open",
+        "classification": "unclassified",
+        "author": {
+            "userId": "6aad780ce470879405ff14af",
+            "fullName": "Miyabi Hoshimi"
+        },
+        "createdOn": "2026-09-25T20:56:21.752Z",
+        "comments": [],
+        "testCases": [],
+        "timeLog": []
+    },
+    {
+        "_id": "6ab6df32debac92c32ca5d5b",
+        "title": "1234564",
+        "description": "Issue description",
+        "stepsToReproduce": "Step 1, Step 2",
+        "priority": "high",
+        "status": "open",
+        "classification": "unclassified",
+        "author": {
+            "userId": "6aad780ce470879405ff14af",
+            "fullName": "Miyabi Hoshimi"
+        },
+        "createdOn": "2026-09-25T20:53:06.788Z",
+        "comments": [],
+        "testCases": [],
+        "timeLog": []
+    },
+    {
+        "_id": "6ab6de07836256d67905f955",
+        "title": "closed issue42244 test",
+        "description": "Issue description",
+        "stepsToReproduce": "Step 1, Step 2",
+        "priority": "high",
+        "status": "open",
+        "classification": "unclassified",
+        "author": {
+            "userId": "6aad780ce470879405ff14af",
+            "fullName": "Miyabi Hoshimi"
+        },
+        "createdOn": "2026-09-25T20:48:07.879Z",
+        "comments": [],
+        "testCases": [],
+        "timeLog": []
+    },
+    {
+        "_id": "6ab6dcf75b2943128f64ed44",
+        "title": "123",
+        "description": "Issue description",
+        "stepsToReproduce": "Step 1, Step 2",
+        "priority": "high",
+        "status": "open",
+        "classification": "unclassified",
+        "author": {
+            "userId": "6aad780ce470879405ff14af",
+            "fullName": "Miyabi Hoshimi"
+        },
+        "createdOn": "2026-09-25T20:43:35.275Z",
+        "comments": [],
+        "testCases": [],
+        "timeLog": []
+    },
+    {
+        "_id": "6ab6d39f32e4830ce7b3bd14",
+        "title": "turkey",
+        "description": "Issue description",
+        "stepsToReproduce": "Step 1, Step 2",
+        "priority": "high",
+        "status": "open",
+        "classification": "unclassified",
+        "author": {
+            "userId": "6aad780ce470879405ff14af",
+            "fullName": "Miyabi Hoshimi"
+        },
+        "createdOn": "2026-09-25T20:03:43.291Z",
+        "comments": [],
+        "testCases": [],
+        "timeLog": []
+    },
+    {
+        "_id": "6ab2babce85627dca1b48e94",
+        "title": "Constantly loading",
+        "description": "Page loading freezes at 99%",
+        "stepsToReproduce": " 1.Open the website from any source",
+        "status": "closed",
+        "priority": "low",
+        "classification": "unapproved",
+        "createdOn": "2026-09-22T17:28:28.267Z",
+        "author": {
+            "userId": "6aac45663c299e5342891895",
+            "fullName": "Justin Thompson"
+        },
+        "assignedTo": {
+            "userId": "2552552525252",
+            "fullName": "Alice Thymefield"
+        },
+        "comments": [
+            {
+                "id": "6aac4c59b8a607a4a4349492 ",
+                "userId": " 6aac4ccba693bf19b2f497d6",
+                "fullName": "Alice Hyacinth ",
+                "comment": "Please fix as soon as possible the site is unusable ",
+                "createdOn": "2026-09-22T17:28:28.267Z"
+            },
+            {
+                "_id": "868a3c6e-f480-4f15-835f-c1a46cd5593a",
+                "userId": "6aad780ce470879405ff14af",
+                "fullName": "Miyabi Hoshimi",
+                "comment": "I want the error message to be blue not red2",
+                "createdOn": "2026-09-30T19:31:34.957Z"
+            }
+        ],
+        "testCases": [
+            {
+                "_id": "6ab2b9b66581bb16fd574056",
+                "userId": "6aac4b7760201c5ed2bcea92",
+                "passed": false,
+                "createdOn": "2026-09-22T17:28:28.267Z"
+            },
+            {
+                "_id": "ce953d0d-f56a-4d6c-b335-a220442a72fa",
+                "userId": "6aad780ce470879405ff14af",
+                "passed": true,
+                "createdOn": "2026-10-01T20:50:42.089Z"
+            }
+        ],
+        "timeLog": [
+            {
+                "userId": "6aac4b7760201c5ed2bcea92",
+                "hoursWorked": 30,
+                "passed": false,
+                "loggedOn": "2026-09-22T17:28:28.267Z"
+            }
+        ]
+    },
+    {
+        "_id": "6aad8f5e36e840ccf9e3cca5",
+        "title": "Constantly loading",
+        "description": "Page loading freezes at 99%",
+        "stepsToReproduce": " 1.Open the website from any source",
+        "status": "open",
+        "priority": "low",
+        "classification": "unclassified",
+        "createdOn": "2026-09-18T19:22:06.797Z",
+        "author": {
+            "userId": "6aac45663c299e5342891895",
+            "fullName": "Justin Thompson"
+        },
+        "assignedTo": {
+            "userId": "6aac4b7760201c5ed2bcea92",
+            "fullName": "Bob Bobbingson"
+        },
+        "comments": [
+            {
+                "id": "6aac4c59b8a607a4a4349492 ",
+                "userId": " 6aac4ccba693bf19b2f497d6",
+                "fullName": "Alice Hyacinth ",
+                "comment": "Please fix as soon as possible the site is unusable ",
+                "createdOn": "2026-09-18T19:22:06.797Z"
+            }
+        ],
+        "testCases": [
+            {
+                "_id": null,
+                "userId": null,
+                "passed": null,
+                "createdOn": "2026-09-18T19:22:06.797Z"
+            }
+        ],
+        "timeLog": [
+            {
+                "userId": " ",
+                "hoursWorked": null,
+                "passed": null,
+                "loggedOn": null
+            }
+        ],
+        "fixed": {
+            "fixedBy": {
+                "userId": null,
+                "fullName": null
+            },
+            "fixedOnVersion": null,
+            "fixedOnDate": null
+        }
+    },
+    {
+        "_id": "6aad7c3636e840ccf9e3cca4",
+        "title": "Failing to load images",
+        "description": "Images of products improperly load",
+        "stepsToReproduce": " Refresh any html page with images",
+        "status": "in-progress",
+        "priority": "low",
+        "classification": "unapproved",
+        "createdOn": "2026-09-18T18:00:22.921Z",
+        "author": {
+            "userId": "6aad7a7364b39ceca2b8d780",
+            "fullName": "Remielle Dan"
+        },
+        "assignedTo": {
+            "userId": "6aac4b7760201c5ed2bcea92",
+            "fullName": "Asaba Harumasa"
+        },
+        "testCases": [
+            {
+                "_id": "6aad7ac1949a30bdb0fe2bb4",
+                "userId": "6aac4b7760201c5ed2bcea92",
+                "passed": false,
+                "createdOn": "2026-09-18T18:00:22.921Z"
+            }
+        ]
+    },
+    {
+        "_id": "6aad7c1836e840ccf9e3cca3",
+        "title": "Queries failing to find proper inventory",
+        "description": "Search for any item that we sell in the search bar and nothing returns",
+        "stepsToReproduce": " 1.Type the name in the search bar and hit enter",
+        "status": "closed",
+        "priority": "medium",
+        "classification": "approved",
+        "createdOn": "2026-09-18T17:59:52.840Z",
+        "author": {
+            "userId": "6aad78e531ec9c91694e7dd1",
+            "fullName": "Starlight Billy"
+        },
+        "assignedTo": {
+            "userId": "6aad78f57846511dfa2eeaad",
+            "fullName": "Justin Thompson"
+        },
+        "testCases": [
+            {
+                "_id": "6aad790e14f21324c417998a",
+                "userId": "6aad791fd9f9e73be23e0353",
+                "passed": true,
+                "createdOn": "2026-09-18T17:59:52.840Z"
+            }
+        ],
+        "timeLog": [
+            {
+                "userId": " 6aad791fd9f9e73be23e0353 ",
+                "hoursWorked": 45,
+                "passed": true,
+                "loggedOn": "2026-09-18T17:59:52.840Z"
+            }
+        ],
+        "fixed": {
+            "fixedBy": {
+                "userId": "6aad78f57846511dfa2eeaad",
+                "fullName": "Cissia"
+            },
+            "fixedOnVersion": "1.05",
+            "fixedOnDate": "2026-09-18T17:59:52.840Z"
+        }
+    },
+    {
+        "_id": "6aad7bbb36e840ccf9e3cca2",
+        "title": "Payment processing failed",
+        "description": "Server 500 error upon processing payment",
+        "stepsToReproduce": " 1. Click the payment button",
+        "status": "closed",
+        "priority": "high",
+        "classification": "approved",
+        "createdOn": "2026-09-18T17:58:19.071Z",
+        "author": {
+            "userId": "6aad780ce470879405ff14af",
+            "fullName": "Miyabi Hoshimi"
+        },
+        "assignedTo": {
+            "userId": "6aad783119cdc5d65b974899",
+            "fullName": "Claret Flintstone"
+        }
+    },
+    {
+        "_id": "6ab1a5eded6c39e542accc1d",
+        "title": "Page failing to load",
+        "description": "Page infinitely loads over and over again",
+        "status": "open",
+        "priority": "low"
+    },
+    {
+        "_id": "6ab2bfb09d8414968b0cb035",
+        "title": "Scroll wheel not working on website",
+        "comments": [
+            {
+                "id": "6aada628b45b42fededdce80",
+                "userId": "6aac4b7760201c5ed2bcea92",
+                "fullName": "Bob Bobbingson",
+                "comment": "This is really frustrating",
+                "createdOn": "2026-09-22T17:49:43.272Z"
+            }
+        ],
+        "testCases": [
+            {
+                "id": "6aada73af14493d53d58413f",
+                "userId": "6aac4b7760201c5ed2bcea92",
+                "fullName": "Bob Bobbingson",
+                "passed": true,
+                "createdOn": "2026-09-22T17:50:17.707Z"
+            }
+        ],
+        "timeLog": [
+            {
+                "userId": "6aac4b7760201c5ed2bcea92",
+                "hoursWorked": 10,
+                "loggedOn": "2026-09-22T17:51:44.944Z"
+            }
+        ],
+        "status": "closed"
+    }
+]
+
+4 GET /issues?sort=title (not on the allow-list) — confirm 400 with a ValidationFailed error.
+ 
+
+
+400 
+
+
+{
+    "error": "ValidationFailed",
+    "details": [
+        {
+            "path": "sort",
+            "message": "Invalid option: expected one of \"createdOn\"|\"-createdOn\"|\"priority\"|\"-priority\""
+        }
+    ]
+}
+
+
+5 GET /issues?q=<PAGE> — confirm it matches case-insensitively, and still matches when the word appears only in description, not title.
+
+200
+
+[
+    {
+        "_id": "6ab1a5eded6c39e542accc1d",
+        "title": "Page failing to load",
+        "description": "Page infinitely loads over and over again",
+        "status": "open",
+        "priority": "low"
+    },
+    {
+        "_id": "6aad8f5e36e840ccf9e3cca5",
+        "title": "Constantly loading",
+        "description": "Page loading freezes at 99%",
+        "stepsToReproduce": " 1.Open the website from any source",
+        "status": "open",
+        "priority": "low",
+        "classification": "unclassified",
+        "createdOn": "2026-09-18T19:22:06.797Z",
+        "author": {
+            "userId": "6aac45663c299e5342891895",
+            "fullName": "Justin Thompson"
+        },
+        "assignedTo": {
+            "userId": "6aac4b7760201c5ed2bcea92",
+            "fullName": "Bob Bobbingson"
+        },
+        "comments": [
+            {
+                "id": "6aac4c59b8a607a4a4349492 ",
+                "userId": " 6aac4ccba693bf19b2f497d6",
+                "fullName": "Alice Hyacinth ",
+                "comment": "Please fix as soon as possible the site is unusable ",
+                "createdOn": "2026-09-18T19:22:06.797Z"
+            }
+        ],
+        "testCases": [
+            {
+                "_id": null,
+                "userId": null,
+                "passed": null,
+                "createdOn": "2026-09-18T19:22:06.797Z"
+            }
+        ],
+        "timeLog": [
+            {
+                "userId": " ",
+                "hoursWorked": null,
+                "passed": null,
+                "loggedOn": null
+            }
+        ],
+        "fixed": {
+            "fixedBy": {
+                "userId": null,
+                "fullName": null
+            },
+            "fixedOnVersion": null,
+            "fixedOnDate": null
+        }
+    },
+    {
+        "_id": "6ab2babce85627dca1b48e94",
+        "title": "Constantly loading",
+        "description": "Page loading freezes at 99%",
+        "stepsToReproduce": " 1.Open the website from any source",
+        "status": "closed",
+        "priority": "low",
+        "classification": "unapproved",
+        "createdOn": "2026-09-22T17:28:28.267Z",
+        "author": {
+            "userId": "6aac45663c299e5342891895",
+            "fullName": "Justin Thompson"
+        },
+        "assignedTo": {
+            "userId": "2552552525252",
+            "fullName": "Alice Thymefield"
+        },
+        "comments": [
+            {
+                "id": "6aac4c59b8a607a4a4349492 ",
+                "userId": " 6aac4ccba693bf19b2f497d6",
+                "fullName": "Alice Hyacinth ",
+                "comment": "Please fix as soon as possible the site is unusable ",
+                "createdOn": "2026-09-22T17:28:28.267Z"
+            },
+            {
+                "_id": "868a3c6e-f480-4f15-835f-c1a46cd5593a",
+                "userId": "6aad780ce470879405ff14af",
+                "fullName": "Miyabi Hoshimi",
+                "comment": "I want the error message to be blue not red2",
+                "createdOn": "2026-09-30T19:31:34.957Z"
+            }
+        ],
+        "testCases": [
+            {
+                "_id": "6ab2b9b66581bb16fd574056",
+                "userId": "6aac4b7760201c5ed2bcea92",
+                "passed": false,
+                "createdOn": "2026-09-22T17:28:28.267Z"
+            },
+            {
+                "_id": "ce953d0d-f56a-4d6c-b335-a220442a72fa",
+                "userId": "6aad780ce470879405ff14af",
+                "passed": true,
+                "createdOn": "2026-10-01T20:50:42.089Z"
+            }
+        ],
+        "timeLog": [
+            {
+                "userId": "6aac4b7760201c5ed2bcea92",
+                "hoursWorked": 30,
+                "passed": false,
+                "loggedOn": "2026-09-22T17:28:28.267Z"
+            }
+        ]
+    }
+]
+
+
+6 GET /issues?page=2&limit=2 against at least 3 seeded issues — confirm you get the second page, not a repeat of the first. Then update TEST-RESULTS.md with today's results.
+
+200
+[
+    {
+        "_id": "6aad7c3636e840ccf9e3cca4",
+        "title": "Failing to load images",
+        "description": "Images of products improperly load",
+        "stepsToReproduce": " Refresh any html page with images",
+        "status": "in-progress",
+        "priority": "low",
+        "classification": "unapproved",
+        "createdOn": "2026-09-18T18:00:22.921Z",
+        "author": {
+            "userId": "6aad7a7364b39ceca2b8d780",
+            "fullName": "Remielle Dan"
+        },
+        "assignedTo": {
+            "userId": "6aac4b7760201c5ed2bcea92",
+            "fullName": "Asaba Harumasa"
+        },
+        "testCases": [
+            {
+                "_id": "6aad7ac1949a30bdb0fe2bb4",
+                "userId": "6aac4b7760201c5ed2bcea92",
+                "passed": false,
+                "createdOn": "2026-09-18T18:00:22.921Z"
+            }
+        ]
+    },
+    {
+        "_id": "6aad8f5e36e840ccf9e3cca5",
+        "title": "Constantly loading",
+        "description": "Page loading freezes at 99%",
+        "stepsToReproduce": " 1.Open the website from any source",
+        "status": "open",
+        "priority": "low",
+        "classification": "unclassified",
+        "createdOn": "2026-09-18T19:22:06.797Z",
+        "author": {
+            "userId": "6aac45663c299e5342891895",
+            "fullName": "Justin Thompson"
+        },
+        "assignedTo": {
+            "userId": "6aac4b7760201c5ed2bcea92",
+            "fullName": "Bob Bobbingson"
+        },
+        "comments": [
+            {
+                "id": "6aac4c59b8a607a4a4349492 ",
+                "userId": " 6aac4ccba693bf19b2f497d6",
+                "fullName": "Alice Hyacinth ",
+                "comment": "Please fix as soon as possible the site is unusable ",
+                "createdOn": "2026-09-18T19:22:06.797Z"
+            }
+        ],
+        "testCases": [
+            {
+                "_id": null,
+                "userId": null,
+                "passed": null,
+                "createdOn": "2026-09-18T19:22:06.797Z"
+            }
+        ],
+        "timeLog": [
+            {
+                "userId": " ",
+                "hoursWorked": null,
+                "passed": null,
+                "loggedOn": null
+            }
+        ],
+        "fixed": {
+            "fixedBy": {
+                "userId": null,
+                "fullName": null
+            },
+            "fixedOnVersion": null,
+            "fixedOnDate": null
+        }
+    }
+]

@@ -320,14 +320,14 @@ export async function listIssuesQuery(req:Request , res: Response, next: NextFun
     const issues= getIssuesCollection();
     const query = req.query as unknown as ListIssuesQuery;
     const filter: Record<string, unknown> = {};
-    const skip = (query.page -1) * query.limit;
+    const skip = (query.page -1) * query.limit; // example page 2 would be items 21-40 becasue the first 20 are skipped
     if (query.status) filter.status =query.status;
     if (query.priority) filter.priority = query. priority;
     if (query.classification) filter.classification;
     if (query.assignedTo) filter["assignedTo.UserId"] = query.assignedTo;
 
     if (query.q) {
-      const pipeline: Document[] = [
+      const pipeline: Document[] = [ //Document comes from mongodb it means that we are going to be using objects from mongodb and apply them to the to the pipeline
         {
           $search: { 
             index: "default",
@@ -335,24 +335,26 @@ export async function listIssuesQuery(req:Request , res: Response, next: NextFun
             } 
         }
       ];
-      if (Object.keys(filter).length > 0) pipeline.push({ $match: filter });
-      if (query.sort) {
-        const descending = query.sort.startsWith("-");
-        const field = descending ? query.sort.slice(1) : query.sort;
-        pipeline.push({ $sort: { [field]: descending ? -1 : 1 } });
+      if (Object.keys(filter).length > 0) pipeline.push({ $match: filter }); // if there is no filter the length would be 0 and no new filter is added
+      //right now search and filter are part of the aggregation so right now the results will be those whos text matches the query and have a matching quality of the filter for example priority being high
+      if (query.sort) { //checks if sort is in the query
+        const descending = query.sort.startsWith("-"); //if a query starts with - then it is descending
+        const field = descending ? query.sort.slice(1) : query.sort; //checks if the descending returns starts with - if it does then it removes it before setting field's value equal to it otherwise field will just be the sort value
+        pipeline.push({ $sort: { [field]: descending ? -1 : 1 } }); //sorts the field descending if the descending variable is true and ascending if it is false
       }
-      pipeline.push({$skip: skip}, {$limit: query.limit});
+      pipeline.push({$skip: skip}, {$limit: query.limit}); //tells the pipeline variable to skip the skip amount and limits the limit amount
       
-      return res.json(await issues.aggregate(pipeline).toArray());
+      return res.json(await issues.aggregate(pipeline).toArray()); //uses the aggregation pipeline on the issues db turns it into an array 
       }
+      //the next part is if query.q doesn't exist
       const cursor = issues.find(filter);
-      if (query.sort) {
+      if (query.sort) { //if shorting exists repeats the same operation from earlier 
         const descending = query.sort.startsWith("-");
         const field = descending ? query.sort.slice(1) : query.sort;
-        cursor.sort({[field]: descending ? -1 : 1});
+        cursor.sort({[field]: descending ? -1 : 1}); //sorts the collection by the field if descending is true then it will be descending otherwise ascending
 
       }
-      cursor.skip(skip).limit(query.limit);
+      cursor.skip(skip).limit(query.limit); //skips the correct amount and only displays the limit 
       res.json(await cursor.toArray());
       }
    catch(error) {

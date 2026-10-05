@@ -2,11 +2,11 @@
 
 import { Router,Request,Response, NextFunction } from "express";
 import { error } from "node:console";
-import { Issue} from "../data/issue";
+import { Issue} from "../data/issue.js";
 import {createIssueSchema , updateIssueSchema, setStatusSchema, classifyIssueSchema , assignIssueSchema, addCommentSchema, setTestCaseResultSchema, listIssuesQuerySchema} from "../schema/issueSchemas.js";
 import { listIssues , getIssueByID , createIssue, updateIssue, deleteIssue , setStatus , setClassify , assignIssue, addComment, deleteComment , addTestCase, setTestCaseResult, listIssuesQuery } from "../controllers/issueController.js";
-import { validateBody, validateQuery } from "../middleware/validate";
-import { attachCurrentUser } from "../middleware/currentUser";
+import { validateBody, validateQuery } from "../middleware/validate.js";
+import { attachCurrentUser } from "../middleware/currentUser.js";
 import { set } from "zod";
 
 
