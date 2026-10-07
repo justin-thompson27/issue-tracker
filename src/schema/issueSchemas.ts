@@ -25,7 +25,7 @@ export const assignIssueSchema = z.object({
  
 })
 
-export const addCommentSchema = z.strictObject({
+export const addCommentSchema = z.object({
   comment: z.string().min(1, "comment is required")
 })
 

@@ -1877,3 +1877,9 @@ day 30 LAB 04-04
         }
     }
 ]
+
+
+TEST-RESULTS.md notes that your Atlas Search index named default shows Active on the issues collection (include a screenshot or the index name and status).
+
+Name and Fields: default
+Status: Ready
