@@ -3,6 +3,10 @@ import { createIssueSchema } from "../src/schema/issueSchemas.js";
 import { title } from "node:process";
 import request from "supertest";
 import {app } from "../src/app.js"
+vi.mock("../src/db.js", () => ({
+  getIssuesCollection: vi.fn(),
+  getDb: vi.fn(),
+})); 
 
 describe("my very first test", () => {
   it("knows that 2 + 2 is 4", () => {
