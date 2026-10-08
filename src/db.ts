@@ -5,14 +5,7 @@ const MONGODB_URI = process.env.MONGODB_URI as string;
 
 const DB_NAME = process.env.DB_NAME as string;
 
-/*  if (!MONGODB_URI) {
-  throw new Error("Missing required environment variable: MONGODB_URI");
-};
 
-if (!DB_NAME) {
-  throw new Error("Missing required environment variable: DB_NAME");
-};
-  */
 const client = new MongoClient(MONGODB_URI);
 let db: Db;
 
