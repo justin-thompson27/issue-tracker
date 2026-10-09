@@ -310,11 +310,6 @@ export async function setTestCaseResult(req: Request, res: Response , next: Next
   }  
 }
 
-function escapeRegex(input : string): string 
-{
- return input.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-
-}
 
 export async function listIssuesQuery(req:Request , res: Response, next: NextFunction) {
   try {

@@ -15,7 +15,7 @@ My Results :
 
 
 
-GET /issues
+GET /issues AUTOMATED
 —
 My Results: 
 200
@@ -249,7 +249,7 @@ My Results:
 returns all 3 seeded issues
 
 
-GET /issues/6ab2babce85627dca1b48e94
+GET /issues/6ab2babce85627dca1b48e94 AUTOMATED
 —
 My Results:
 200
@@ -300,7 +300,7 @@ returns your first seeded issue (id 1)
 
 
 
-GET /issues/999
+GET /issues/999 AUTOMATED
 —
 My Results:
 400
@@ -313,7 +313,7 @@ My Results:
 
 
 
-POST /issues
+POST /issues AUTOMATED
 My Results:
 201
 {
@@ -328,7 +328,7 @@ created with status "open", priority "medium"
 
 
 
-POST /issues
+POST /issues AUTOMATED
 {}
 My Results:
 400
@@ -341,7 +341,7 @@ My Results:
 
 
 
-PATCH /issues/6ab2babce85627dca1b48e94
+PATCH /issues/6ab2babce85627dca1b48e94 AUTOMATED
 {"status":"closed"}
 200
 My Results:
@@ -393,7 +393,7 @@ issue 1's status is now "closed"
 
 
 
-PATCH /issues/999
+PATCH /issues/999 AUTOMATED
 {"status":"closed"}
 404
 My Results:
@@ -405,7 +405,7 @@ no issue with that id
 
 
 
-DELETE /issues/26ab2d74ad71b61d3a14ed802
+DELETE /issues/26ab2d74ad71b61d3a14ed802 
 —
 My Results:
 204
@@ -441,7 +441,7 @@ Lab 04-01
 Day 25 Results 
 
 
-1 POST a valid issue body — confirm 201, and confirm the response's author matches your hardcoded placeholder, not anything you sent.
+1 POST a valid issue body — confirm 201, and confirm the response's author matches your hardcoded placeholder, not anything you sent. AUTOMATED
 
 http://localhost:3000/issues/
 {
@@ -474,7 +474,7 @@ http://localhost:3000/issues/
     "timeLog": []
 }
 
-2 POST a body missing a required field (e.g. no title) — confirm 400 with a ValidationFailed error and a details array naming the missing field, not a 500 or a silently-created issue.
+2 POST a body missing a required field (e.g. no title) — confirm 400 with a ValidationFailed error and a details array naming the missing field, not a 500 or a silently-created issue. AUTOMATED
 
 http://localhost:3000/issues/
 {
@@ -530,7 +530,7 @@ inserted json result
 
 
 
-4 PATCH an existing issue with just one field (e.g. { "priority": "high" }) — confirm only that field changed, and every other field (including comments, testCases, timeLog) is untouched.
+4 PATCH an existing issue with just one field (e.g. { "priority": "high" }) — confirm only that field changed, and every other field (including comments, testCases, timeLog) is untouched. AUTOMATED
 
 
 http://localhost:3000/issues/6ab6dff5d39531dcbd4a2e11
@@ -561,7 +561,7 @@ LAB 04-02
 Day 26
 
 1
-PATCH /issues/:id/status with a valid value (e.g. { "status": "in-progress" }) — confirm 200, and confirm the response's status actually changed.
+PATCH /issues/:id/status with a valid value (e.g. { "status": "in-progress" }) — confirm 200, and confirm the response's status actually changed. AUTOMATED
 
 http://localhost:3000/issues/6aad7bbb36e840ccf9e3cca2/status
 {"status":"closed"}
@@ -585,7 +585,7 @@ http://localhost:3000/issues/6aad7bbb36e840ccf9e3cca2/status
     }
 }
 
-2 PATCH /issues/:id/status with an invalid value (e.g. { "status": "done" }) — confirm 400 with a ValidationFailed error naming status, not a 500 or a silent no-op.
+2 PATCH /issues/:id/status with an invalid value (e.g. { "status": "done" }) — confirm 400 with a ValidationFailed error naming status, not a 500 or a silent no-op. AUTOMATED
 
 http://localhost:3000/issues/6aad7bbb36e840ccf9e3cca2/status
 {"status":"done"}
@@ -600,7 +600,7 @@ http://localhost:3000/issues/6aad7bbb36e840ccf9e3cca2/status
     ]
 }
 
-3 Repeat both of the above for PATCH /issues/:id/classify, using a valid and an invalid classification value.
+3 Repeat both of the above for PATCH /issues/:id/classify, using a valid and an invalid classification value. AUTOMATED
 
 
 http://localhost:3000/issues/6ab2babce85627dca1b48e94/classify
@@ -665,7 +665,7 @@ http://localhost:3000/issues/6ab2babce85627dca1b48e94/classify
 }
 
 
-4 PATCH /issues/:id/assign with a complete { "userId", "fullName" } body — confirm the response's assignedTo matches exactly what you sent, unlike author's fixed placeholder from Lab 04-01.
+4 PATCH /issues/:id/assign with a complete { "userId", "fullName" } body — confirm the response's assignedTo matches exactly what you sent, unlike author's fixed placeholder from Lab 04-01. 
 
 
 
@@ -720,7 +720,7 @@ http://localhost:3000/issues/6ab2babce85627dca1b48e94/assign
 }
 
 
-5 PATCH /issues/:id/assign with fullName missing — confirm 400. Then update TEST-RESULTS.md with today's results.
+5 PATCH /issues/:id/assign with fullName missing — confirm 400. Then update TEST-RESULTS.md with today's results. AUTOMATED
 
 
 http://localhost:3000/issues/6ab2babce85627dca1b48e94/assign
@@ -742,7 +742,7 @@ http://localhost:3000/issues/6ab2babce85627dca1b48e94/assign
 
 Day 28 Lab 04-03
 
-POST /issues/:id/comments with a valid comment — confirm 201, and confirm the new comment's userId and fullName match your placeholder identity.
+POST /issues/:id/comments with a valid comment — confirm 201, and confirm the new comment's userId and fullName match your placeholder identity. AUTOMATED
  http://localhost:3000/issues/6ab2babce85627dca1b48e94/comments
 {"comment": "This is a test comment."}
 201
@@ -805,7 +805,7 @@ POST /issues/:id/comments with a valid comment — confirm 201, and confirm the 
 }
 
 
-2 POST /issues/:id/comments with an empty comment string — confirm 400 with a ValidationFailed error.
+2 POST /issues/:id/comments with an empty comment string — confirm 400 with a ValidationFailed error. AUTOMATED
 
 http://localhost:3000/issues/6ab2babce85627dca1b48e94/comments
 {"comment": ""}
@@ -822,7 +822,7 @@ http://localhost:3000/issues/6ab2babce85627dca1b48e94/comments
     ]
 }
 
-3 DELETE /issues/:id/comments/:commentId for a comment that exists — confirm 200, and confirm that comment (and only that one) is gone from the response.
+3 DELETE /issues/:id/comments/:commentId for a comment that exists — confirm 200, and confirm that comment (and only that one) is gone from the response. AUTOMATED
 
 http://localhost:3000/issues/6ab2babce85627dca1b48e94/comments/f0b1e082-fb90-421c-888c-cfc5d91a4939
 200
@@ -877,7 +877,7 @@ http://localhost:3000/issues/6ab2babce85627dca1b48e94/comments/f0b1e082-fb90-421
     ]
 }
 
-4 POST /issues/:id/test-cases — confirm 201, and confirm the new test case's passed starts false.
+4 POST /issues/:id/test-cases — confirm 201, and confirm the new test case's passed starts false. AUTOMATED
 
 
 http://localhost:3000/issues/6ab2babce85627dca1b48e94/test-cases
@@ -941,7 +941,7 @@ http://localhost:3000/issues/6ab2babce85627dca1b48e94/test-cases
 
 
 5
-PATCH /issues/:id/test-cases/:testCaseId with { "passed": true } — confirm 200, and confirm only that test case changed. Then update TEST-RESULTS.md with today's results.
+PATCH /issues/:id/test-cases/:testCaseId with { "passed": true } — confirm 200, and confirm only that test case changed. Then update TEST-RESULTS.md with today's results. AUTOMATED
 
 http://localhost:3000/issues/6ab2babce85627dca1b48e94/test-cases/ce953d0d-f56a-4d6c-b335-a220442a72fa
 
@@ -1185,7 +1185,7 @@ day 30 LAB 04-04
     }
 ]
 
-2 GET /issues?status=open&priority=high — confirm every result matches both filters at once, not just one.
+2 GET /issues?status=open&priority=high — confirm every result matches both filters at once, not just one. AUTOMATED
 200 
 [
     {
