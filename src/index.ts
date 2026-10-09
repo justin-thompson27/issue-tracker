@@ -46,5 +46,5 @@ app.listen(PORT,
 
 /*  */ 
 await getDb();
-app.listen(3000, () => console.log("listening"));
+app.listen(PORT, () => console.log("listening"));
 
