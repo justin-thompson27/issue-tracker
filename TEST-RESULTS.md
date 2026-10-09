@@ -1305,7 +1305,7 @@ day 30 LAB 04-04
     }
 ]
 
-3 GET /issues?sort=-createdOn — confirm results come back newest-first.
+3 GET /issues?sort=-createdOn — confirm results come back newest-first. AUTOMATED
 200
 [
     {
@@ -1655,7 +1655,7 @@ day 30 LAB 04-04
     }
 ]
 
-4 GET /issues?sort=title (not on the allow-list) — confirm 400 with a ValidationFailed error.
+4 GET /issues?sort=title (not on the allow-list) — confirm 400 with a ValidationFailed error. AUTOMATED
  
 
 
@@ -1673,7 +1673,7 @@ day 30 LAB 04-04
 }
 
 
-5 GET /issues?q=<PAGE> — confirm it matches case-insensitively, and still matches when the word appears only in description, not title.
+5 GET /issues?q=<PAGE> — confirm it matches case-insensitively, and still matches when the word appears only in description, not title. AUTOMATED
 
 200
 
@@ -1795,7 +1795,7 @@ day 30 LAB 04-04
 ]
 
 
-6 GET /issues?page=2&limit=2 against at least 3 seeded issues — confirm you get the second page, not a repeat of the first. Then update TEST-RESULTS.md with today's results.
+6 GET /issues?page=2&limit=2 against at least 3 seeded issues — confirm you get the second page, not a repeat of the first. Then update TEST-RESULTS.md with today's results. AUTOMATED
 
 200
 [
