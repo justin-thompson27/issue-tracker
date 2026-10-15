@@ -1,5 +1,7 @@
 # Issue Tracker
+
 A role-based issue tracker for software teams. Users log in, and their role controls what they can change on an issue, like classification and priority.
+
 **Live API:** https://issue-tracker-796332310847.us-central1.run.app 
 
 **Example:** [/issues?page=2&limit=2](https://issue-tracker-796332310847.us-central1.run.app/issues?page=2&limit=2)
