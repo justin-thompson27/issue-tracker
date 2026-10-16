@@ -277,7 +277,7 @@ export async function addTestCase(req: Request, res: Response , next: NextFuncti
       {$push: {testCases: newTestCase}},
       {returnDocument: "after"},
 
-    )
+    );
     if (!result) {
       return res.status(404).json({error: "Issue not found"});
     }
