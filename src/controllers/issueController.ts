@@ -1,7 +1,7 @@
 import { Request,Response, NextFunction } from "express";
 import { Issue} from "../data/issue.js";
 import { getIssuesCollection } from "../db.js";
-import { CreateIssueInput , UpdateIssueInput, SetStatusInput , ClassifyIssueInput , AssignIssueInput, AddCommentInput , SetTestCaseResultInput ,ListIssuesQuery} from "../schema/issueSchemas.js";
+import { CreateIssueInput , UpdateIssueInput, SetStatusInput , ClassifyIssueInput , AssignIssueInput, AddCommentInput , SetTestCaseResultInput ,ListIssuesQuery, PostTimelogInput} from "../schema/issueSchemas.js";
 import { ObjectId, ReturnDocument , Filter , Document } from "mongodb";
 import { randomUUID } from "crypto";
 import { error } from "console";
@@ -358,3 +358,117 @@ export async function listIssuesQuery(req:Request , res: Response, next: NextFun
   }
   
 }
+
+
+ export async function postTimeLogEntry( 
+  req: Request,
+  res: Response,
+  next: NextFunction
+) 
+  {
+    let objectId: ObjectId;
+
+  try {
+    // Convert the id from the URL into a MongoDB ObjectId.
+    objectId = new ObjectId(req.params.id as string);
+  } catch {
+    return res.status(400).json({ error: "Invalid issue id" });
+  }
+  try {
+    const {hoursWorked} = req.body as PostTimelogInput; //gets the time log from the request body that has already been validated by Zod middleware
+    //creates a new time log 
+    const newTimeLog = {
+      userId: req.user.userId,
+      hoursWorked, // is the only field that really needs the request body, the rest is server controlled
+      loggedOn: new Date(),
+    };
+    const issues = getIssuesCollection(); // gets the collection of issues from the database
+    const result = await issues.findOneAndUpdate( //finds the collection with the matching id and adds the timelog 
+      { _id: objectId },
+      { $push: { timeLog: newTimeLog } },
+      { returnDocument: "after" }
+    );
+    if (!result) { //if result is not successful, return a 404 error
+      return res.status(404).json({ error: "Issue not found" }); 
+    }
+    res.status(201).json(result); //otherwise a 201 code is sent and returns the json of the updated issue with the new timelog entry
+
+  }
+  catch (err) {
+    // Send unexpected errors to our Express error handler.
+    next(err);
+  }
+
+
+
+
+  } 
+// GET /issues/:id/time-log/summary
+// Calculates total logged hours and groups them by user.
+export async function getTimeLogSummary(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  // Convert the validated issue ID into a MongoDB ObjectId.
+  const objectId = parseId(req, res);
+
+  if (!objectId) return;
+
+  try {
+    const issues = getIssuesCollection();
+
+    // Retrieve the issue from MongoDB.
+    const issue = await issues.findOne({ _id: objectId });
+
+    // Return 404 if the issue does not exist.
+    if (!issue) {
+      return res.status(404).json({ error: "Issue not found" });
+    }
+
+    // Define the structure of a stored time-log entry.
+    type TimeLogEntry = {
+      userId: string;
+      hoursWorked: number;
+      createdOn: Date;
+    };
+
+    // Read the issue's time-log entries.
+    // Older issues may not have a timeLog field.
+    const timeLog = (issue as typeof issue & {
+      timeLog?: TimeLogEntry[];
+    }).timeLog ?? [];
+
+    let totalHours = 0;
+
+    // Store each user's accumulated hours.
+    const hoursByUser = new Map<string, number>();
+
+    for (const entry of timeLog) {
+      totalHours += entry.hoursWorked;
+
+      const previousHours = hoursByUser.get(entry.userId) ?? 0;
+
+      hoursByUser.set(
+        entry.userId,
+        previousHours + entry.hoursWorked
+      );
+    }
+
+    // Convert the Map into the required response array.
+    const byUser = Array.from(hoursByUser, ([userId, hours]) => ({
+      userId,
+      hours,
+    }));
+
+    // Return the summary without modifying the database.
+    return res.status(200).json({
+      issueId: objectId.toHexString(),
+      totalHours,
+      byUser,
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
