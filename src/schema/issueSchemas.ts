@@ -49,11 +49,32 @@ export const listIssuesQuerySchema = z.object({
     
 })
 
-export type UpdateIssueInput = z.infer<typeof updateIssueSchema>// this type will be used in the controllers function for update
-export type CreateIssueInput = z.infer<typeof createIssueSchema>// this type will be used in the controllers function for create
-export type SetStatusInput = z.infer<typeof setStatusSchema>// this type will be used in the controllers function for set status
-export type ClassifyIssueInput = z.infer<typeof classifyIssueSchema>// this type will be used in the controllers function for classify issue
-export type AssignIssueInput = z.infer<typeof assignIssueSchema>// this type will be used in the controllers function for assign issue
-export type AddCommentInput = z.infer<typeof addCommentSchema>// this type will be used in the controllers function for add comment
-export type SetTestCaseResultInput = z.infer<typeof setTestCaseResultSchema> // thi
-export type ListIssuesQuery = z.infer<typeof listIssuesQuerySchema>
+
+export const postTimelogSchema = z.object({
+  // The time spent on the issue in hours.
+ hoursWorked: z.coerce.number().positive("Time spent must be greater than 0"),
+});
+
+// Validates the issue ID from the URL.
+// MongoDB ObjectIds must contain exactly 24 hexadecimal characters.
+export const issueIdParamsSchema = z.object({
+  id: z.string().regex(
+    /^[0-9a-fA-F]{24}$/,
+    "Issue ID must be exactly 24 hexadecimal characters"
+  ),
+});
+
+
+
+export type UpdateIssueInput = z.infer<typeof updateIssueSchema>;// this type will be used in the controllers function for update
+export type CreateIssueInput = z.infer<typeof createIssueSchema>;// this type will be used in the controllers function for create
+export type SetStatusInput = z.infer<typeof setStatusSchema>;// this type will be used in the controllers function for set status
+export type ClassifyIssueInput = z.infer<typeof classifyIssueSchema>;// this type will be used in the controllers function for classify issue
+export type AssignIssueInput = z.infer<typeof assignIssueSchema>;// this type will be used in the controllers function for assign issue
+export type AddCommentInput = z.infer<typeof addCommentSchema>;// this type will be used in the controllers function for add comment
+export type SetTestCaseResultInput = z.infer<typeof setTestCaseResultSchema>; // this type will be used in the controllers function for set test case result
+export type ListIssuesQuery = z.infer<typeof listIssuesQuerySchema>;
+// The controller will use this after req.body has been validated.
+export type PostTimelogInput = z.infer<typeof postTimelogSchema>;
+// Creates a TypeScript type from the validated URL parameters.
+export type IssueIdParams = z.infer<typeof issueIdParamsSchema>;

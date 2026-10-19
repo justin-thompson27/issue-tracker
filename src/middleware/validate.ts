@@ -52,3 +52,26 @@ export function validateQuery(schema: ZodType)
   next();
 };
 }
+
+// Validates URL parameters before the request reaches the controller.
+// This is used to check MongoDB issue IDs in the route.
+export function validateParams(schema: ZodType) {
+  return (req: Request, res: Response, next: NextFunction) => {
+    // Validate the URL parameters using the supplied Zod schema.
+    const result = schema.safeParse(req.params);
+
+    // Return a 400 response if validation fails.
+    if (!result.success) {
+      return res.status(400).json({
+        error: "ValidationFailed",
+        details: result.error.issues.map((issue) => ({
+          path: issue.path.join("."),
+          message: issue.message,
+        })),
+      });
+    }
+
+    // Validation passed, so continue to the controller.
+    next();
+  };
+}
