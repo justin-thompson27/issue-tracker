@@ -12,6 +12,7 @@ import { getDb } from "./db.js";
 import { get } from "node:http";
 import { toNodeHandler } from "better-auth/node";
 import { auth } from "./auth.js";
+import { requireAuth } from "./middleware/requireAuth.js";
 
 
 export const app = express();
@@ -34,10 +35,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(import.meta.dirname, "../vite-project/frontend/dist")));
 
 
-app.use("/issues",issuesRouter); //assigns the router to issues so if the link is /issues it will go to teh issues route
+app.use("/issues",requireAuth,issuesRouter); //assigns the router to issues so if the link is /issues it will go to teh issues route
+//require Auth now runs before every line in the routes.
 // app.get("*", (req, res) => {
 //   res.sendFile(path.join(import.meta.dirname, "../frontend/dist/index.html"));
 // });
+app.get("/api/me", requireAuth, (req, res) => {
+  res.json(req.user);
+});
 
 app.get("/health", (req,res) => { //this is a request handler it gets called for every GET request unlike the callback function 
     res.json({

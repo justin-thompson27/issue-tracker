@@ -1883,3 +1883,393 @@ TEST-RESULTS.md notes that your Atlas Search index named default shows Active on
 
 Name and Fields: default
 Status: Ready
+
+
+
+**Lab 05-01**
+
+
+1  GET / with no cookie returns 200 HTML (the landing page is public).
+
+
+
+200 
+<!doctype html><html lang="en"><head><meta charset="UTF-8" /><link rel="icon" type="image/svg+xml" href="/favicon.svg" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>frontend</title><script type="module" crossorigin src="/assets/index-BcoPXmiK.js"></script><link rel="stylesheet" crossorigin href="/assets/index-D64VDMd1.css">
+  </head><body><div id="root"></div></body>
+</html>
+
+ 
+2  POST /api/auth/sign-up/email with a valid body returns 200 and sets a cookie.
+
+{
+    "name": "Justin",
+    "email": "Justin@example.com",
+    "password": "correct-horse-9"
+}
+
+200 ok 
+{
+    "token": "C8K0MyB76VmHQDNW8EdnVpvx0CtteMdy",
+    "user": {
+        "name": "Justin",
+        "email": "justin@example.com",
+        "emailVerified": false,
+        "createdAt": "2026-10-23T18:36:22.321Z",
+        "updatedAt": "2026-10-23T18:36:22.321Z",
+        "id": "6adba9265c542ec86e13f246"
+    }
+}
+
+
+3
+GET /api/auth/get-session with that cookie returns your user. Without the cookie it returns null.
+
+200
+{
+    "session": {
+        "expiresAt": "2026-10-30T18:36:22.416Z",
+        "token": "C8K0MyB76VmHQDNW8EdnVpvx0CtteMdy",
+        "createdAt": "2026-10-23T18:36:22.416Z",
+        "updatedAt": "2026-10-23T18:36:22.416Z",
+        "ipAddress": "",
+        "userAgent": "PostmanRuntime/2.12.1",
+        "userId": "6adba9265c542ec86e13f246",
+        "id": "6adba9265c542ec86e13f248"
+    },
+    "user": {
+        "name": "Justin",
+        "email": "justin@example.com",
+        "emailVerified": false,
+        "createdAt": "2026-10-23T18:36:22.321Z",
+        "updatedAt": "2026-10-23T18:36:22.321Z",
+        "id": "6adba9265c542ec86e13f246"
+    }
+}
+
+200
+null
+
+
+4 POST /api/auth/sign-out returns {"success":true}, and get-session is null afterwards.
+
+200
+{
+    "success": true
+}
+
+200
+null
+
+
+
+5 POST /api/auth/sign-in/email with the right password returns 200; with a wrong password returns 401.
+
+
+200
+{
+    "redirect": false,
+    "token": "kkZy7Ymz7VNgdZRpA75HCDOI6qj2WOh0",
+    "user": {
+        "name": "Justin",
+        "email": "justin@example.com",
+        "emailVerified": false,
+        "createdAt": "2026-10-23T18:36:22.321Z",
+        "updatedAt": "2026-10-23T18:36:22.321Z",
+        "id": "6adba9265c542ec86e13f246"
+    }
+}
+
+401
+{
+    "message": "Invalid email or password",
+    "code": "INVALID_EMAIL_OR_PASSWORD"
+}
+
+6 Duplicate email returns 422; a password under 8 characters returns 400; a request with no Origin returns 403.
+
+
+{
+    "name": "Justin",
+    "email": "Justin@example.com",
+    "password": "correct-horse-9"
+}
+422
+{
+    "message": "User already exists. Use another email.",
+    "code": "USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL"
+}
+
+{
+    "name": "Justin",
+    "email": "Justin@example.com",
+    "password": "co9"
+}
+400
+{
+    "message": "Password too short",
+    "code": "PASSWORD_TOO_SHORT"
+}
+
+
+403
+no origin 
+{
+    "message": "Missing or null Origin",
+    "code": "MISSING_OR_NULL_ORIGIN"
+}
+
+
+7
+In your database, user, account and session exist and the stored password is a hash. (Describe what you saw; do not paste the hash.)
+
+
+User: has _id , name , email , emailVerified , createdAt , updatedAt 
+
+
+account: has _id, accountId , providerId , userId, password , createdAt , updatedAt 
+
+
+session: has _id, expiresAt , token , createdAt , updatedAt , ipAddress , userAgent , userId
+
+
+
+
+**lab 05-02**
+
+Sign out, then ask again. Send the sign-out request, then GET /issues. Expect 401. Postman still holds the old cookie, but the server ended that session, so the cookie opens nothing.
+
+
+200
+{
+    "success": true
+}
+
+Get 
+
+401
+{
+    "error": "Please sign in first"
+}
+
+
+
+Put the guard after the router. In app.ts, temporarily change the mount to app.use("/issues", issuesRouter); and add app.use("/issues", requireAuth); on the next line. Restart the server, sign out, and send GET /issues. You will get 200 and your issues. The router answered first, so the guard never ran. This is the most common mistake with middleware. Put the line back.
+
+
+
+
+200
+[
+    {
+        "_id": "6aad7bbb36e840ccf9e3cca2",
+        "title": "Payment processing failed",
+        "description": "Server 500 error upon processing payment",
+        "stepsToReproduce": " 1. Click the payment button",
+        "status": "closed",
+        "priority": "high",
+        "classification": "approved",
+        "createdOn": "2026-09-18T17:58:19.071Z",
+        "author": {
+            "userId": "6aad780ce470879405ff14af",
+            "fullName": "Miyabi Hoshimi"
+        },
+        "assignedTo": {
+            "userId": "6aad783119cdc5d65b974899",
+            "fullName": "Claret Flintstone"
+        }
+    },
+    etc....
+]
+
+Leave a pretend user behind. Temporarily put attachCurrentUser back on POST /issues (you can bring the file back from git with git restore). Sign in and create an issue. The author is the pretend person, even though you are signed in, because the pretend middleware ran after the guard and overwrote the real name tag. Remove it again.
+
+
+200
+{
+    "title": "Login button misaligned",
+    "description": "Off by 4px on mobile",
+    "stepsToReproduce": "Open on a phone",
+    "priority": "low",
+    "status": "open",
+    "classification": "unclassified",
+    "author": {
+        "userId": "6aad780ce470879405ff14af",
+        "fullName": "Miyabi Hoshimi"
+    },
+    "createdOn": "2026-10-23T19:29:10.075Z",
+    "comments": [],
+    "testCases": [],
+    "timeLog": [],
+    "_id": "6adbb586d53bb36308f2d996"
+}
+
+Re-Testing Everything
+Stop the server, start it again, and write one row in TEST-RESULTS.md for each result you actually saw:
+1 Signed out: GET /issues, GET /issues/:id, POST /issues, and GET /api/me all return 401 with {"error":"Please sign in first"}.
+
+
+Get/issues
+401
+{
+    "error": "Please sign in first"
+}
+
+Get/issues/64f000000000000000000001
+401
+{
+    "error": "Please sign in first"
+}
+
+POST /issues
+401
+{
+    "error": "Please sign in first"
+}
+
+
+2 Signed out: GET /, GET /health and GET /api/auth/get-session still answer 200.
+
+
+GET /
+200
+<!doctype html><html lang="en"><head><meta charset="UTF-8" /><link rel="icon" type="image/svg+xml" href="/favicon.svg" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>frontend</title><script type="module" crossorigin src="/assets/index-BcoPXmiK.js"></script><link rel="stylesheet" crossorigin href="/assets/index-D64VDMd1.css">
+  </head><body><div id="root"></div></body>
+</html>
+
+GET /health
+200
+{
+    "status": "ok"
+}
+
+
+GET /api/auth/get-session
+200
+null
+
+3 Signed in: GET /api/me returns your real userId and fullName, and GET /issues returns 200.
+
+GET /api/me
+{
+    "userId": "6adba9265c542ec86e13f246",
+    "fullName": "Justin"
+}
+
+GET /issues
+200
+[
+    {
+        "_id": "6aad7bbb36e840ccf9e3cca2",
+        "title": "Payment processing failed",
+        "description": "Server 500 error upon processing payment",
+        "stepsToReproduce": " 1. Click the payment button",
+        "status": "closed",
+        "priority": "high",
+        "classification": "approved",
+        "createdOn": "2026-09-18T17:58:19.071Z",
+        "author": {
+            "userId": "6aad780ce470879405ff14af",
+            "fullName": "Miyabi Hoshimi"
+        },
+        "assignedTo": {
+            "userId": "6aad783119cdc5d65b974899",
+            "fullName": "Claret Flintstone"
+        }
+    }, etc....
+] 
+
+4 Signed in: POST /issues with a fake author in the body creates the issue with your real author.
+
+
+{
+    "title": "Login button misaligned",
+    "description": "Off by 4px on mobile",
+    "stepsToReproduce": "Open on a phone",
+    "priority": "low",
+    "author": {
+        "userId": "hacker",
+        "fullName": "Not Me"
+    }
+}
+
+201
+{
+    "title": "Login button misaligned",
+    "description": "Off by 4px on mobile",
+    "stepsToReproduce": "Open on a phone",
+    "priority": "low",
+    "status": "open",
+    "classification": "unclassified",
+    "author": {
+        "userId": "6adba9265c542ec86e13f246",
+        "fullName": "Justin"
+    },
+    "createdOn": "2026-10-23T19:50:58.543Z",
+    "comments": [],
+    "testCases": [],
+    "timeLog": [],
+    "_id": "6adbbaa2b6fd96b5eacf8f92"
+}
+
+
+5 After sign-out, the old cookie no longer opens /issues (401).
+
+
+401
+{
+    "error": "Please sign in first"
+}
+
+6 Guard placed after the router: GET /issues returned 200 when signed out. Guard restored afterwards.
+
+
+200
+[
+    {
+        "_id": "6aad7bbb36e840ccf9e3cca2",
+        "title": "Payment processing failed",
+        "description": "Server 500 error upon processing payment",
+        "stepsToReproduce": " 1. Click the payment button",
+        "status": "closed",
+        "priority": "high",
+        "classification": "approved",
+        "createdOn": "2026-09-18T17:58:19.071Z",
+        "author": {
+            "userId": "6aad780ce470879405ff14af",
+            "fullName": "Miyabi Hoshimi"
+        },
+        "assignedTo": {
+            "userId": "6aad783119cdc5d65b974899",
+            "fullName": "Claret Flintstone"
+        }
+    },
+    etc....
+]
+
+
+8 A leftover pretend user overwrote the real author. Removed afterwards.
+
+
+200
+{
+    "title": "Login button misaligned",
+    "description": "Off by 4px on mobile",
+    "stepsToReproduce": "Open on a phone",
+    "priority": "low",
+    "status": "open",
+    "classification": "unclassified",
+    "author": {
+        "userId": "6aad780ce470879405ff14af",
+        "fullName": "Miyabi Hoshimi"
+    },
+    "createdOn": "2026-10-23T19:29:10.075Z",
+    "comments": [],
+    "testCases": [],
+    "timeLog": [],
+    "_id": "6adbb586d53bb36308f2d996"
+}
+
+
+
+
+npm test passes, including tests/auth.test.ts, and npx tsc --noEmit has no errors.
