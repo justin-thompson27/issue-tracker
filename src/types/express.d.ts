@@ -4,6 +4,7 @@ declare global { //adds or modify the a definition of an object in on a global s
   namespace Express{ //namespace declares that the code will belong to this specific type which is express 
     interface Request { // the interface Request belongs to the express namesapce/module 
       user: IssueUserRef; //adds user property to Request that is type of issueUserRef
+       role: string;    
     }
   }
 }
