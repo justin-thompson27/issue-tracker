@@ -2273,3 +2273,491 @@ GET /issues
 
 
 npm test passes, including tests/auth.test.ts, and npx tsc --noEmit has no errors.
+
+
+
+
+**Lab 05-03**
+
+
+
+Re-Testing Everything
+
+
+1 Signed out: PATCH /issues/<id>/classify returns 401, not 403.
+
+401
+{
+    "error": "Please sign in first"
+}
+
+2 Signed in as Nate (no role): GET /issues is 200; POST /issues is 403 Your role may not issue:create; POST a comment is 403 Your role may not comment:create.
+
+403
+{
+    "error": "Your role may not issue:create"
+}
+
+
+3 Signed in as Tia: all four roles were given out (200), a role wizard is 400, changing her own role is 400, and an unknown user is 404.
+
+
+
+200
+{
+    "user": {
+        "name": "Eve",
+        "email": "eve@example.com",
+        "emailVerified": false,
+        "createdAt": "2026-10-27T20:54:57.169Z",
+        "updatedAt": "2026-10-28T20:40:59.958Z",
+        "role": "developer",
+        "banned": false,
+        "id": "6ae10fa1ae1bb4027d77b424"
+    }
+}
+
+
+200
+{
+    "user": {
+        "name": "Bo",
+        "email": "bo@example.com",
+        "emailVerified": false,
+        "createdAt": "2026-10-27T20:56:14.391Z",
+        "updatedAt": "2026-10-28T20:41:51.323Z",
+        "role": "businessAnalyst",
+        "banned": false,
+        "id": "6ae10feeae1bb4027d77b427"
+    }
+}
+
+
+200
+{
+    "user": {
+        "name": "Quinn",
+        "email": "quinn@example.com",
+        "emailVerified": false,
+        "createdAt": "2026-10-27T20:56:58.301Z",
+        "updatedAt": "2026-10-28T20:42:28.671Z",
+        "role": "qualityAnalyst",
+        "banned": false,
+        "id": "6ae1101aae1bb4027d77b42a"
+    }
+}
+
+
+200
+{
+    "user": {
+        "name": "Pat",
+        "email": "pat@example.com",
+        "emailVerified": false,
+        "createdAt": "2026-10-27T20:57:45.707Z",
+        "updatedAt": "2026-10-28T20:43:18.245Z",
+        "role": "productManager",
+        "banned": false,
+        "id": "6ae11049ae1bb4027d77b42d"
+    }
+}
+
+400
+{
+    "error": "ValidationFailed",
+    "details": [
+        {
+            "path": "role",
+            "message": "Invalid option: expected one of \"developer\"|\"businessAnalyst\"|\"qualityAnalyst\"|\"productManager\"|\"technicalManager\""
+        }
+    ]
+}
+
+
+400
+{
+    "error": "You cannot change your own role"
+}
+
+404
+{
+    "error": "User not found"
+}
+
+
+
+4 Eve's GET /api/me shows "role":"developer" without signing in again.
+
+
+
+200
+{
+    "userId": "6ae10fa1ae1bb4027d77b424",
+    "fullName": "Eve",
+    "role": "developer"
+}
+
+
+5 Classify: Eve 403, Bo 200. Close: Eve 403, Bo 200. Move to in-progress: Eve 200.
+
+Eve
+403
+{
+    "error": "Your role may not issue:classify"
+}
+
+403
+{
+    "error": "Your role may not issue:close"
+}
+
+200
+{
+    "_id": "6ae24fd0cb1e6baa4958a542",
+    "title": "Login button misaligned",
+    "description": "Off by 4px on mobile",
+    "stepsToReproduce": "Open on a phone",
+    "priority": "low",
+    "status": "in-progress",
+    "classification": "unclassified",
+    "author": {
+        "userId": "6ae1101aae1bb4027d77b42a",
+        "fullName": "Quinn"
+    },
+    "createdOn": "2026-10-28T19:41:04.940Z",
+    "comments": [],
+    "testCases": [
+        {
+            "_id": "ca09c72d-1b60-444e-a10b-ba7b4c2ddc5e",
+            "userId": "6ae1101aae1bb4027d77b42a",
+            "passed": true,
+            "createdOn": "2026-10-28T19:41:35.378Z"
+        }
+    ],
+    "timeLog": []
+}
+
+
+Bo
+
+200
+{
+    "_id": "6ae24fd0cb1e6baa4958a542",
+    "title": "Login button misaligned",
+    "description": "Off by 4px on mobile",
+    "stepsToReproduce": "Open on a phone",
+    "priority": "low",
+    "status": "in-progress",
+    "classification": "approved",
+    "author": {
+        "userId": "6ae1101aae1bb4027d77b42a",
+        "fullName": "Quinn"
+    },
+    "createdOn": "2026-10-28T19:41:04.940Z",
+    "comments": [],
+    "testCases": [
+        {
+            "_id": "ca09c72d-1b60-444e-a10b-ba7b4c2ddc5e",
+            "userId": "6ae1101aae1bb4027d77b42a",
+            "passed": true,
+            "createdOn": "2026-10-28T19:41:35.378Z"
+        }
+    ],
+    "timeLog": []
+}
+
+
+
+200
+{
+    "_id": "6ae24fd0cb1e6baa4958a542",
+    "title": "Login button misaligned",
+    "description": "Off by 4px on mobile",
+    "stepsToReproduce": "Open on a phone",
+    "priority": "low",
+    "status": "closed",
+    "classification": "approved",
+    "author": {
+        "userId": "6ae1101aae1bb4027d77b42a",
+        "fullName": "Quinn"
+    },
+    "createdOn": "2026-10-28T19:41:04.940Z",
+    "comments": [],
+    "testCases": [
+        {
+            "_id": "ca09c72d-1b60-444e-a10b-ba7b4c2ddc5e",
+            "userId": "6ae1101aae1bb4027d77b42a",
+            "passed": true,
+            "createdOn": "2026-10-28T19:41:35.378Z"
+        }
+    ],
+    "timeLog": []
+}
+
+
+
+
+6 Assign: Eve 403, Pat 200. Test case: Eve 403, Quinn 201. Set result: Bo 403, Quinn 200.
+
+
+Eve
+
+403
+{
+    "error": "Your role may not issue:assign"
+}
+
+
+403
+{
+    "error": "Your role may not testCase:create"
+}
+
+
+Pat
+
+200
+{
+    "_id": "6ae24fd0cb1e6baa4958a542",
+    "title": "Login button misaligned",
+    "description": "Off by 4px on mobile",
+    "stepsToReproduce": "Open on a phone",
+    "priority": "low",
+    "status": "closed",
+    "classification": "approved",
+    "author": {
+        "userId": "6ae1101aae1bb4027d77b42a",
+        "fullName": "Quinn"
+    },
+    "createdOn": "2026-10-28T19:41:04.940Z",
+    "comments": [],
+    "testCases": [
+        {
+            "_id": "ca09c72d-1b60-444e-a10b-ba7b4c2ddc5e",
+            "userId": "6ae1101aae1bb4027d77b42a",
+            "passed": true,
+            "createdOn": "2026-10-28T19:41:35.378Z"
+        }
+    ],
+    "timeLog": [],
+    "assignedTo": {
+        "userId": "6ae10fa1ae1bb4027d77b424",
+        "fullName": "Bo Analyst"
+    }
+}
+
+
+Quinn
+
+201
+{
+    "_id": "6ae24fd0cb1e6baa4958a542",
+    "title": "Login button misaligned",
+    "description": "Off by 4px on mobile",
+    "stepsToReproduce": "Open on a phone",
+    "priority": "low",
+    "status": "closed",
+    "classification": "approved",
+    "author": {
+        "userId": "6ae1101aae1bb4027d77b42a",
+        "fullName": "Quinn"
+    },
+    "createdOn": "2026-10-28T19:41:04.940Z",
+    "comments": [],
+    "testCases": [
+        {
+            "_id": "ca09c72d-1b60-444e-a10b-ba7b4c2ddc5e",
+            "userId": "6ae1101aae1bb4027d77b42a",
+            "passed": true,
+            "createdOn": "2026-10-28T19:41:35.378Z"
+        },
+        {
+            "_id": "4c2b65f8-f8f3-4eb1-8d70-4fc213b22b8d",
+            "userId": "6ae1101aae1bb4027d77b42a",
+            "passed": false,
+            "createdOn": "2026-10-28T21:02:29.769Z"
+        }
+    ],
+    "timeLog": [],
+    "assignedTo": {
+        "userId": "6ae10fa1ae1bb4027d77b424",
+        "fullName": "Bo Analyst"
+    }
+}
+
+200
+{
+    "_id": "6ae24fd0cb1e6baa4958a542",
+    "title": "Login button misaligned",
+    "description": "Off by 4px on mobile",
+    "stepsToReproduce": "Open on a phone",
+    "priority": "low",
+    "status": "closed",
+    "classification": "approved",
+    "author": {
+        "userId": "6ae1101aae1bb4027d77b42a",
+        "fullName": "Quinn"
+    },
+    "createdOn": "2026-10-28T19:41:04.940Z",
+    "comments": [],
+    "testCases": [
+        {
+            "_id": "ca09c72d-1b60-444e-a10b-ba7b4c2ddc5e",
+            "userId": "6ae1101aae1bb4027d77b42a",
+            "passed": true,
+            "createdOn": "2026-10-28T19:41:35.378Z"
+        },
+        {
+            "_id": "4c2b65f8-f8f3-4eb1-8d70-4fc213b22b8d",
+            "userId": "6ae1101aae1bb4027d77b42a",
+            "passed": true,
+            "createdOn": "2026-10-28T21:02:29.769Z"
+        }
+    ],
+    "timeLog": [],
+    "assignedTo": {
+        "userId": "6ae10fa1ae1bb4027d77b424",
+        "fullName": "Bo Analyst"
+    }
+}
+
+Bo
+
+
+403
+{
+    "error": "Your role may not testCase:setResult"
+}
+
+7 Delete an issue: Pat 403, Tia 204.
+
+
+Pat 
+403
+{
+    "error": "Your role may not issue:delete"
+}
+
+
+
+Tia
+204
+
+
+
+
+
+
+8 Break-it: the misspelled permission failed tsc; the removed guard let Eve classify (200); Nate could not promote himself (403) and a sign-up carrying role was refused (400); a role changed in mongosh took effect on the very next request.
+
+
+        1 Misspell a permission. In issues.ts change requirePermission("issue", "classify") to "clsoe" and run npx tsc --noEmit. TypeScript refuses before the server even starts. Fix the spelling.
+
+
+
+        C:\Users\Ranken\Desktop\finalProject\issue-tracker> npx tsc --noEmit
+        src/routes/issues.ts:38:63 - error TS2345: Argument of type '"clsoe"' is not assignable to parameter of type '"close" | "delete" | "create" | "classify" | "assign"'.
+
+        38 issuesRouter.patch("/:id/classify",requirePermission("issue", "clsoe"),validateBody(classifyIssueSchema), setClassify);
+                                                                        ~~~~~~~
+
+
+        Found 1 error in src/routes/issues.ts:38
+
+
+
+        Remove a guard. Delete requirePermission("issue", "classify") from the classify route, restart, sign in as Eve and send the classify request. (If your chart lets a Developer classify, use a role your chart does not allow to classify.) It is 200: a Developer just classified an issue. No error, no warning, nothing crashed. This is why every role is tested on purpose. Put the guard back.
+
+        200
+        {
+            "_id": "6adbbaa2b6fd96b5eacf8f92",
+            "title": "Login button misaligned",
+            "description": "Off by 4px on mobile",
+            "stepsToReproduce": "Open on a phone",
+            "priority": "low",
+            "status": "open",
+            "classification": "approved",
+            "author": {
+                "userId": "6adba9265c542ec86e13f246",
+                "fullName": "Justin"
+            },
+            "createdOn": "2026-10-23T19:50:58.543Z",
+            "comments": [],
+            "testCases": [],
+            "timeLog": []
+        }
+
+
+
+
+
+
+        Promote yourself. Sign in as Nate and send PATCH /users/<nateId>/role with {"role":"technicalManager"}. Expect 403 Your role may not user:set-role. Then try to sign up a new person with the extra field "role":"technicalManager" in the sign-up body. Expect 400 {"message":"role is not allowed to be set","code":"FIELD_NOT_ALLOWED"}.
+
+        403
+        {
+            "error": "Your role may not user:set-role"
+        }
+
+        400 
+        {
+            "message": "role is not allowed to be set",
+            "code": "FIELD_NOT_ALLOWED"
+        }
+
+        Change a role behind the server's back. Sign in as Quinn and confirm setResult works (200). In mongosh run db.user.updateOne({ email: "quinn@example.com" }, { $set: { role: "developer" } }), then send the same request again without signing in again. It is now 403. Change the role back.
+
+
+        200
+        {
+            "_id": "6ae24fd0cb1e6baa4958a542",
+            "title": "Login button misaligned",
+            "description": "Off by 4px on mobile",
+            "stepsToReproduce": "Open on a phone",
+            "priority": "low",
+            "status": "open",
+            "classification": "unclassified",
+            "author": {
+                "userId": "6ae1101aae1bb4027d77b42a",
+                "fullName": "Quinn"
+            },
+            "createdOn": "2026-10-28T19:41:04.940Z",
+            "comments": [],
+            "testCases": [
+                {
+                    "_id": "ca09c72d-1b60-444e-a10b-ba7b4c2ddc5e",
+                    "userId": "6ae1101aae1bb4027d77b42a",
+                    "passed": true,
+                    "createdOn": "2026-10-28T19:41:35.378Z"
+                }
+            ],
+            "timeLog": []
+        }
+
+
+
+
+        403
+        {
+            "error": "Your role may not testCase:setResult"
+        }
+
+
+9 npm test passes, including tests/permissions.test.ts, and npx tsc --noEmit has no errors.
+
+
+ ✓ tests/warmup.test.ts (5 tests) 79ms
+ ✓ tests/auth.test.ts (4 tests) 84ms
+ ✓ tests/permissions.test.ts (9 tests) 138ms
+ ✓ tests/issues.test.ts (33 tests) 411ms
+
+ Test Files  4 passed (4)
+      Tests  51 passed (51)
+   Start at  16:13:54
+   Duration  1.95s (import 75%, tests 12%, transform 11%, setup 2%, worker 1%)
+
+
+
+C:\Users\Ranken\Desktop\finalProject\issue-tracker>npx tsc --noEmit
+
+C:\Users\Ranken\Desktop\finalProject\issue-tracker>

@@ -37,7 +37,7 @@ issuesRouter.patch("/:id",validateBody(updateIssueSchema),updateIssue);
 issuesRouter.patch("/:id/status",validateBody(setStatusSchema),onlyWhenClosing(requirePermission("issue", "close")),setStatus);
 issuesRouter.patch("/:id/classify",requirePermission("issue", "classify"),validateBody(classifyIssueSchema), setClassify);
 issuesRouter.patch("/:id/assign", requirePermission("issue", "assign"),validateBody(assignIssueSchema),assignIssue);
-issuesRouter.patch("/:id/test-cases/:testCaseId",validateBody(setTestCaseResultSchema),setTestCaseResult); 
+issuesRouter.patch("/:id/test-cases/:testCaseId",requirePermission("testCase","setResult"),validateBody(setTestCaseResultSchema),setTestCaseResult); 
 
 issuesRouter.delete("/:id",requirePermission("issue", "delete"),deleteIssue)
 issuesRouter.delete("/:id/comments/:commentId", deleteComment);

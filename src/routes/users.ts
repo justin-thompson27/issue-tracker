@@ -5,6 +5,7 @@ import { auth } from "../auth.js";
 import { requirePermission } from "../middleware/requirePermission.js";
 import { validateBody } from "../middleware/validate.js";
 import { setRoleSchema } from "../schema/userSchemas.js";
+import console, { error } from "node:console";
 
 
 export const usersRouter = Router();
@@ -31,8 +32,8 @@ usersRouter.patch(
     } catch (err) {
       // better-auth explains itself, e.g. 404 "User not found".
       // Pass that on.
-      if (err instanceof APIError) { //better-auth's own errors carry a status and a message. We pass them straight on, so a missing user is 404, not a mysterious 500.
-
+      if (err instanceof APIError) {//better-auth's own errors carry a status and a message. We pass them straight on, so a missing user is 404, not a mysterious 500.
+        console.log(err.message);
         return res.status(err.statusCode).json({ error: err.message });
       }
       next(err);
