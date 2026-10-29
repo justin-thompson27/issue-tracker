@@ -94,7 +94,7 @@ export  async function updateIssue(req: Request, res: Response, next: NextFuncti
     try {
        const updates = req.body as UpdateIssueInput;
       
-       const issueToUpdate = await getIssuesCollection().findOneAndUpdate({_id : objectId},{$set : updates}, { returnDocument: "after" }) //if u dont add returnDocument it returns the old doc without the update
+       const issueToUpdate = await getIssuesCollection().findOneAndUpdate({_id : objectId},{ $set: { ...updates, updatedBy: req.user, updatedAt: new Date() } }, { returnDocument: "after" }) //if u dont add returnDocument it returns the old doc without the update
        
         if (!issueToUpdate) {
           return res.status(404).json({ error: "Issue not found" });
@@ -140,12 +140,19 @@ export async function deleteIssue(req:Request,res: Response , next: NextFunction
     const objectId = parseId(req, res);
     if(!objectId) return; 
     try{
+      const now = new Date();
       const {status} = req.body as SetStatusInput;
       const issues =  getIssuesCollection();
       const result = await issues.findOneAndUpdate(
         {_id: objectId}, 
-        {$set: {status}}, 
-        {returnDocument: "after"}
+        {$set: {
+          status,
+          updatedBy: req.user,
+          updatedAt: now,
+          ...(status === "closed" ? { closedBy: req.user, closedAt: now } : {}),
+          },
+        },
+        {returnDocument: "after"},
       );
       if(!result)
       {
@@ -169,8 +176,8 @@ export async function deleteIssue(req:Request,res: Response , next: NextFunction
       const issues =  getIssuesCollection();
       const result = await issues.findOneAndUpdate(
         {_id: objectId}, 
-        {$set: {classification}}, 
-        {returnDocument: "after"}
+        { $set: { classification, updatedBy: req.user, updatedAt: new Date() } },
+        {returnDocument: "after"},
       );
       if(!result)
       {
@@ -193,8 +200,14 @@ export async function deleteIssue(req:Request,res: Response , next: NextFunction
       const {userId, fullName} = req.body as AssignIssueInput;
       const result = await issues.findOneAndUpdate(
         {_id: objectId},
-        {$set: {assignedTo: {userId, fullName}}},
-        {returnDocument: "after"}
+        {
+         $set: {
+          assignedTo: { userId, fullName },
+          updatedBy: req.user,
+          updatedAt: new Date(),
+          },
+        },
+        {returnDocument: "after"},
       );
       if(!result)
       {
@@ -224,7 +237,7 @@ export async function addComment(req: Request, res: Response, next: NextFunction
       const result = await issues.findOneAndUpdate(
         { _id: objectId},
         {$push: {comments: newComment}},
-        {returnDocument: "after"}
+        {returnDocument: "after"},
       );
       if(!result)
       {
@@ -249,7 +262,7 @@ export async function addComment(req: Request, res: Response, next: NextFunction
         {_id: objectId},
         {$pull: {comments: {_id: commentId}}},
         {returnDocument: "after"},
-      )
+      );
     if (!result) {
       return res.status(404).json({error: "Issue not found"});
     }
