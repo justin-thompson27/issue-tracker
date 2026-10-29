@@ -29,7 +29,7 @@ describe("authentication", () => {
     getSession.mockResolvedValue({ user: { id: "u1", name: "Dana Dev" } });
     const res = await request(app).get("/api/me");
     expect(res.status).toBe(200);
-    expect(res.body).toEqual({ userId: "u1", fullName: "Dana Dev" });
+    expect(res.body).toEqual({ userId: "u1", fullName: "Dana Dev", role: "none" });
   });
  
   it("keeps /health public", async () => {

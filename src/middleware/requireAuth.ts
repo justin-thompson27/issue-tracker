@@ -16,5 +16,7 @@ export async function requireAuth(
   }
  
   req.user = { userId: session.user.id, fullName: session.user.name }; //sets the request user to the session user so that it can be used in the route handler the shape that IssueUserRef is the same as this 
+  req.role = session.user.role ?? "none";     
+
   next();
 }

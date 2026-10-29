@@ -13,6 +13,7 @@ import { get } from "node:http";
 import { toNodeHandler } from "better-auth/node";
 import { auth } from "./auth.js";
 import { requireAuth } from "./middleware/requireAuth.js";
+import { usersRouter } from "./routes/users.js";
 
 
 export const app = express();
@@ -41,8 +42,9 @@ app.use("/issues",requireAuth,issuesRouter); //assigns the router to issues so i
 //   res.sendFile(path.join(import.meta.dirname, "../frontend/dist/index.html"));
 // });
 app.get("/api/me", requireAuth, (req, res) => {
-  res.json(req.user);
+  res.json({ ...req.user, role: req.role });
 });
+
 
 app.get("/health", (req,res) => { //this is a request handler it gets called for every GET request unlike the callback function 
     res.json({
@@ -50,5 +52,7 @@ app.get("/health", (req,res) => { //this is a request handler it gets called for
  
 });
 });
+
+app.use("/users", requireAuth, usersRouter);
 
 app.use(errorHandler); // swaps to the error handler if a error is thrown
