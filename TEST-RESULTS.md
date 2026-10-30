@@ -2761,3 +2761,182 @@ Tia
 C:\Users\Ranken\Desktop\finalProject\issue-tracker>npx tsc --noEmit
 
 C:\Users\Ranken\Desktop\finalProject\issue-tracker>
+
+
+
+LAB 05-04
+
+
+Step 10 — Break it on purpose
+
+
+Remove the ownership rule. In the edit route (PATCH /:id) delete the requireIssueRule(canEditIssue, ...) lines, restart, sign in as Bo and edit Eve's issue. It is 200: Bo just rewrote somebody else's work. No error, nothing crashed. Put the rule back.
+
+
+
+200
+{
+    "_id": "6ae3b725f053373870baeaf0",
+    "title": "edited by bo",
+    "description": "Off by 4px on mobile",
+    "stepsToReproduce": "Open on a phone",
+    "priority": "low",
+    "status": "closed",
+    "classification": "unclassified",
+    "author": {
+        "userId": "6ae10fa1ae1bb4027d77b424",
+        "fullName": "Eve"
+    },
+    "createdOn": "2026-10-29T21:14:13.779Z",
+    "comments": [],
+    "testCases": [
+        {
+            "_id": "f4251025-3ae3-49da-b8e7-74ebef6d8e16",
+            "userId": "6ae1101aae1bb4027d77b42a",
+            "passed": true,
+            "createdOn": "2026-10-30T17:56:43.189Z"
+        }
+    ],
+    "timeLog": [],
+    "updatedAt": "2026-10-30T18:15:50.707Z",
+    "updatedBy": {
+        "userId": "6ae10feeae1bb4027d77b427",
+        "fullName": "Bo"
+    },
+    "assignedTo": {
+        "userId": "6ae10fa1ae1bb4027d77b424",
+        "fullName": "Eve Dev"
+    },
+    "closedAt": "2026-10-30T18:12:15.384Z",
+    "closedBy": {
+        "userId": "6ae10feeae1bb4027d77b427",
+        "fullName": "Bo"
+    }
+}
+
+
+
+
+Forge the audit trail. As Bo send PATCH /issues/<issueId>/status with the body {"status":"closed","closedBy":{"userId":"hacker","fullName":"Evil Hacker"}}. It is 200, and closedBy is still Bo. The server stamps from the session and ignores what the body claims.
+
+
+
+200
+{
+    "_id": "6ae3b725f053373870baeaf0",
+    "title": "edited by bo",
+    "description": "Off by 4px on mobile",
+    "stepsToReproduce": "Open on a phone",
+    "priority": "low",
+    "status": "closed",
+    "classification": "unclassified",
+    "author": {
+        "userId": "6ae10fa1ae1bb4027d77b424",
+        "fullName": "Eve"
+    },
+    "createdOn": "2026-10-29T21:14:13.779Z",
+    "comments": [],
+    "testCases": [
+        {
+            "_id": "f4251025-3ae3-49da-b8e7-74ebef6d8e16",
+            "userId": "6ae1101aae1bb4027d77b42a",
+            "passed": true,
+            "createdOn": "2026-10-30T17:56:43.189Z"
+        }
+    ],
+    "timeLog": [],
+    "updatedAt": "2026-10-30T18:17:22.887Z",
+    "updatedBy": {
+        "userId": "6ae10feeae1bb4027d77b427",
+        "fullName": "Bo"
+    },
+    "assignedTo": {
+        "userId": "6ae10fa1ae1bb4027d77b424",
+        "fullName": "Eve Dev"
+    },
+    "closedAt": "2026-10-30T18:17:22.887Z",
+    "closedBy": {
+        "userId": "6ae10feeae1bb4027d77b427",
+        "fullName": "Bo"
+    }
+}
+
+
+
+
+Assign to the wrong people. As Pat try to assign the issue to Nate (no role), to yourself as Pat, and to Tia. Each is 400. Then assign to Eve and watch it work.
+
+
+
+403 Nate
+{
+    "error": "Issues can only be assigned to a Developer, Business Analyst or Quality Analyst"
+}
+
+403 Tia
+{
+    "error": "Issues can only be assigned to a Developer, Business Analyst or Quality Analyst"
+}
+
+200 
+{
+    "_id": "6ae3b725f053373870baeaf0",
+    "title": "edited by bo",
+    "description": "Off by 4px on mobile",
+    "stepsToReproduce": "Open on a phone",
+    "priority": "low",
+    "status": "closed",
+    "classification": "unclassified",
+    "author": {
+        "userId": "6ae10fa1ae1bb4027d77b424",
+        "fullName": "Eve"
+    },
+    "createdOn": "2026-10-29T21:14:13.779Z",
+    "comments": [],
+    "testCases": [
+        {
+            "_id": "f4251025-3ae3-49da-b8e7-74ebef6d8e16",
+            "userId": "6ae1101aae1bb4027d77b42a",
+            "passed": true,
+            "createdOn": "2026-10-30T17:56:43.189Z"
+        }
+    ],
+    "timeLog": [],
+    "updatedAt": "2026-10-30T18:19:44.173Z",
+    "updatedBy": {
+        "userId": "6ae11049ae1bb4027d77b42d",
+        "fullName": "Pat"
+    },
+    "assignedTo": {
+        "userId": "6ae10fa1ae1bb4027d77b424",
+        "fullName": "Eve Dev"
+    },
+    "closedAt": "2026-10-30T18:17:22.887Z",
+    "closedBy": {
+        "userId": "6ae10feeae1bb4027d77b427",
+        "fullName": "Bo"
+    }
+}
+
+
+
+
+Try to be the boss. As Tia (Technical Manager) send PATCH /issues/<issueId> with a new title. It is 403 Only the author may edit this issue. A manager's role lets her delete issues and comments, but it does not make her the author.
+
+
+
+403 
+{
+    "error": "Only the author may edit this issue"
+}
+
+
+
+Use the wrong web address. In .env change CLIENT_ORIGIN to http://localhost:9999 and restart the server. Postman is still holding a cookie from Step 9, so send your sign-out request (POST /api/auth/sign-out) with Origin: http://localhost:5173. It is 403 {"message":"Invalid origin","code":"INVALID_ORIGIN"}. better-auth only accepts requests that say they came from the address you trusted. On the live service, if CLIENT_ORIGIN is wrong, this is exactly what you will see. Put .env back and restart.
+
+
+403 
+{
+    "message": "Invalid origin",
+    "code": "INVALID_ORIGIN"
+}

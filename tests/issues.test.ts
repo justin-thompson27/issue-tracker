@@ -191,6 +191,17 @@ vi.mock("../src/db.js", () => ({
 
 const { app } = await import("../src/app.js");
 
+// MODULE 5 CHANGE (the only change from the Module 4 version of this file):
+// only the person an issue is assigned to may move it between open and
+// in-progress, or add and mark test cases. These tests run as the stand-in
+// signed-in person from tests/setup.ts, so those tests first assign the issue
+// to that same person.
+async function assignToMe(id: string) {
+  await request(app)
+    .patch(`/issues/${id}/assign`)
+    .send({ userId: "6aad780ce470879405ff14af", fullName: "Miyabi Hoshimi" });
+}
+
 describe("Issue Tracker — cross-section smoke tests (Days 24-30)", () => {
   beforeEach(() => {
     fakeIssues.docs = [];
@@ -227,6 +238,7 @@ describe("Issue Tracker — cross-section smoke tests (Days 24-30)", () => {
       priority: "medium",
     });
     const id = created.body._id;
+    await assignToMe(id);
 
     const updated = await request(app)
       .patch(`/issues/${id}/status`)
@@ -289,6 +301,7 @@ describe("Issue Tracker — cross-section smoke tests (Days 24-30)", () => {
       priority: "high",
     });
     const id = created.body._id;
+    await assignToMe(id);
 
     const withTestCase = await request(app).post(`/issues/${id}/test-cases`);
     const testCaseId = withTestCase.body.testCases[0]._id;
@@ -437,6 +450,7 @@ describe("Issue Tracker — cross-section smoke tests (Days 24-30)", () => {
 
   it("POST /issues/:id/test-cases adds a test case that starts with passed: false", async () => {
     const created = await request(app).post("/issues").send(validIssue);
+    await assignToMe(created.body._id);
     const res = await request(app).post(`/issues/${created.body._id}/test-cases`);
     expect(res.status).toBe(201);
     expect(res.body.testCases).toHaveLength(1);
@@ -446,6 +460,7 @@ describe("Issue Tracker — cross-section smoke tests (Days 24-30)", () => {
   it("marking one test case passed leaves the other test case unchanged", async () => {
     const created = await request(app).post("/issues").send(validIssue);
     const id = created.body._id;
+    await assignToMe(id);
     await request(app).post(`/issues/${id}/test-cases`);
     const two = await request(app).post(`/issues/${id}/test-cases`);
     const [firstCase, secondCase] = two.body.testCases;
@@ -462,6 +477,7 @@ describe("Issue Tracker — cross-section smoke tests (Days 24-30)", () => {
   it("PATCH /issues/:id/test-cases/:testCaseId rejects a passed value that isn't true or false", async () => {
     const created = await request(app).post("/issues").send(validIssue);
     const id = created.body._id;
+    await assignToMe(id);
     const withCase = await request(app).post(`/issues/${id}/test-cases`);
     const res = await request(app)
       .patch(`/issues/${id}/test-cases/${withCase.body.testCases[0]._id}`)

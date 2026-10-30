@@ -43,5 +43,11 @@ export const roles = {
   }),
 };
  
+
 export type RoleName = keyof typeof roles; // 
 export const roleNames = Object.keys(roles) as [RoleName, ...RoleName[]]; //The five role names as a list, so Zod can check a requested role in Step 6 without you typing the names twice.
+export const assignableRoles = [
+  "developer",
+  "businessAnalyst",
+  "qualityAnalyst",
+] as const satisfies readonly RoleName[]; // makes TypeScript check every word against your five roles, so a misspelled role does not compile. Then a small helper that reads a person's role from the database. 

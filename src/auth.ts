@@ -12,7 +12,7 @@ function requireEnv(name: string): string {
  
 const db = await getDb();
  
-export const auth = betterAuth({ //is the configuration of 
+export const auth = betterAuth({ //is the configuration of betterauth object that will be used in other files 
   
   baseURL: requireEnv("BETTER_AUTH_URL"),
   secret: requireEnv("BETTER_AUTH_SECRET"),

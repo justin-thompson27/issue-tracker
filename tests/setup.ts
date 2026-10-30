@@ -1,5 +1,8 @@
+// Provided for Lab 05-04. You do not write this file.
+// Copy it into your tests folder as it is, and replace any older copy.
+
 import { vi } from "vitest";
- 
+
 // Stand-in for auth.ts: importing your app must never need BETTER_AUTH_* or Atlas.
 // By default every test behaves as a signed-in user, so your Module 4 tests keep passing.
 // A test file that needs "nobody is signed in" writes its own vi.mock (see tests/auth.test.ts).
@@ -9,8 +12,8 @@ vi.mock("../src/auth.js", () => ({
     api: {
       // By default every permission check says yes,
       // so your Module 4 tests keep passing.
-      userHasPermission: vi.fn().mockResolvedValue({ success: true }), // new
-      setRole: vi.fn().mockResolvedValue({                              // new
+      userHasPermission: vi.fn().mockResolvedValue({ success: true }),
+      setRole: vi.fn().mockResolvedValue({
         user: { id: "u9", role: "developer" },
       }),
       getSession: vi.fn().mockResolvedValue({
@@ -20,4 +23,8 @@ vi.mock("../src/auth.js", () => ({
   },
 }));
 
-
+// Stand-in for the user lookup: by default everybody you assign
+// is a Developer.
+vi.mock("../src/userLookup.js", () => ({
+  getUserRole: vi.fn().mockResolvedValue("developer"),
+}));

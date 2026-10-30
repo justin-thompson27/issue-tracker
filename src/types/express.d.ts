@@ -1,10 +1,11 @@
-import { IssueUserRef } from "../data/issue.js";
+import { Issue, IssueUserRef } from "../data/issue.js";
 
 declare global { //adds or modify the a definition of an object in on a global scale in typescript 
   namespace Express{ //namespace declares that the code will belong to this specific type which is express 
     interface Request { // the interface Request belongs to the express namesapce/module 
       user: IssueUserRef; //adds user property to Request that is type of issueUserRef
        role: string;    
+       issue: Issue;  
     }
   }
 }

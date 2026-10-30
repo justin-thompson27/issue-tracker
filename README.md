@@ -15,6 +15,8 @@ A role-based issue tracker for software teams. Users log in, and their role cont
 - Pagination with the ability to limit, filter, and skip
 - Automated testing for the REST API
 - Error handling middleware for HTTP status codes
+- Sign and sign out capabilities using a verified email
+- Permissions for actions are role and ownership based
 
 ## Tech stack
 TypeScript, Node.js, Express, MongoDB, Zod, BetterAuth, deployed on Google Cloud Run
