@@ -75,10 +75,9 @@ issuesRouter.patch("/:id/test-cases/:testCaseId",requirePermission("testCase","s
 
 
 //DELETE
-issuesRouter.delete("/:id",requirePermissionOr("comment","deleteAny", (req) =>canDeleteComment(req.issue, req.params.commentId as string, req.user), "Only the comment's author or a Technical Manager may delete it",
-  ),deleteIssue);
+issuesRouter.delete("/:id", requirePermission("issue", "delete"), deleteIssue);
 
-issuesRouter.delete("/:id/comments/:commentId", deleteComment);
+issuesRouter.delete("/:id/comments/:commentId",requirePermissionOr("comment","deleteAny",(req)=> canDeleteComment(req.issue, req.params.commentId as string, req.user),"Only the comment's author or a Technical Manager may delete it") ,deleteComment);
 
  
   export default issuesRouter;

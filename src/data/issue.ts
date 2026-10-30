@@ -15,10 +15,10 @@ export interface Issue { //interface containing possible issues
   testCases: TestCase[];
   timeLog: TimeLogEntry[];
   fixed?: FixInfo;
-  updatedBy?: IssueUserRef;   // new: who last changed it
-  updatedAt?: Date;           // new: when
-  closedBy?: IssueUserRef;    // new: who closed it
-  closedAt?: Date;            // new: when
+  updatedBy?: IssueUserRef;   //  who last changed it
+  updatedAt?: Date;           //  when
+  closedBy?: IssueUserRef;    //  who closed it
+  closedAt?: Date;            //  when
 
 }
 
