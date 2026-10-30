@@ -28,8 +28,5 @@ export const auth = betterAuth({ //is the configuration of betterauth object tha
       adminRoles: ["technicalManager"],
      }),
   ],
-  logger: { level: "debug" },
-  onAPIError: {
-    onError: (error) => console.error("AUTH ERROR:", error),
-  },
+  
 });
