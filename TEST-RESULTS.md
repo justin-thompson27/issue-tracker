@@ -2764,8 +2764,216 @@ C:\Users\Ranken\Desktop\finalProject\issue-tracker>
 
 
 
-LAB 05-04
+**LAB 05-04**
 
+
+
+
+Re-Testing Everything
+Stop the server, start it again, and write one row in TEST-RESULTS.md for each result you actually saw:
+
+
+
+1Edit: Eve 200, Bo 403 Only the author may edit this issue, an unknown id 404 (not 403), abc 400, and an author sent in the body left the author unchanged.
+
+
+200
+{
+    "_id": "6ae4f7638d15c9ab9b6e0a91",
+    "title": "edited by eve@example.com",
+    "description": "Off by 4px on mobile",
+    "stepsToReproduce": "Open on a phone",
+    "priority": "low",
+    "status": "open",
+    "classification": "unclassified",
+    "author": {
+        "userId": "6ae10fa1ae1bb4027d77b424",
+        "fullName": "Eve"
+    },
+    "createdOn": "2026-10-30T20:00:35.817Z",
+    "comments": [],
+    "testCases": [],
+    "timeLog": [],
+    "updatedAt": "2026-10-30T20:01:36.247Z",
+    "updatedBy": {
+        "userId": "6ae10fa1ae1bb4027d77b424",
+        "fullName": "Eve"
+    }
+}
+403
+{
+    "error": "Only the author may edit this issue"
+}
+404
+http://localhost:3000/issues/6ae4f7638d15c9ab9b6e0a99
+{
+    "error": "Issue not found"
+}
+400
+http://localhost:3000/issues/abc
+{
+    "error": "Invalid issue id"
+}
+
+200
+{
+    "title": "edited by eve@example.com again",
+    "author": {
+        "userId": "hacker",
+        "fullName": "Not Me"
+    }
+
+
+}
+{
+    "_id": "6ae4f7638d15c9ab9b6e0a91",
+    "title": "edited by eve@example.com again",
+    "description": "Off by 4px on mobile",
+    "stepsToReproduce": "Open on a phone",
+    "priority": "low",
+    "status": "open",
+    "classification": "unclassified",
+    "author": {
+        "userId": "6ae10fa1ae1bb4027d77b424",
+        "fullName": "Eve"
+    },
+    "createdOn": "2026-10-30T20:00:35.817Z",
+    "comments": [],
+    "testCases": [],
+    "timeLog": [],
+    "updatedAt": "2026-10-30T20:08:36.536Z",
+    "updatedBy": {
+        "userId": "6ae10fa1ae1bb4027d77b424",
+        "fullName": "Eve"
+    }
+}
+
+
+2 Status: before assignment Eve to in-progress is 403. After Pat assigned Eve: Eve 200, Bo 403. Eve to closed is 403 Your role may not issue:close. Bo to closed is 200 with closedBy, closedAt and updatedBy all Bo.
+
+403
+{
+    "error": "Only the person this issue is assigned to may do that"
+}
+200
+
+{
+    "status": "in-progress"
+    
+}
+
+{
+    "_id": "6ae4f7638d15c9ab9b6e0a91",
+    "title": "edited by eve@example.com again",
+    "description": "Off by 4px on mobile",
+    "stepsToReproduce": "Open on a phone",
+    "priority": "low",
+    "status": "in-progress",
+    "classification": "unclassified",
+    "author": {
+        "userId": "6ae10fa1ae1bb4027d77b424",
+        "fullName": "Eve"
+    },
+    "createdOn": "2026-10-30T20:00:35.817Z",
+    "comments": [],
+    "testCases": [],
+    "timeLog": [],
+    "updatedAt": "2026-10-30T20:12:31.491Z",
+    "updatedBy": {
+        "userId": "6ae10fa1ae1bb4027d77b424",
+        "fullName": "Eve"
+    },
+    "assignedTo": {
+        "userId": "6ae10fa1ae1bb4027d77b424",
+        "fullName": "Eve Dev"
+    }
+}
+403
+
+{
+    "error": "Only the person this issue is assigned to may do that"
+}
+
+
+403
+{
+    "error": "Your role may not issue:close"
+}
+
+200
+
+{
+    "_id": "6ae4f7638d15c9ab9b6e0a91",
+    "title": "edited by eve@example.com again",
+    "description": "Off by 4px on mobile",
+    "stepsToReproduce": "Open on a phone",
+    "priority": "low",
+    "status": "closed",
+    "classification": "unclassified",
+    "author": {
+        "userId": "6ae10fa1ae1bb4027d77b424",
+        "fullName": "Eve"
+    },
+    "createdOn": "2026-10-30T20:00:35.817Z",
+    "comments": [],
+    "testCases": [],
+    "timeLog": [],
+    "updatedAt": "2026-10-30T20:16:38.601Z",
+    "updatedBy": {
+        "userId": "6ae10feeae1bb4027d77b427",
+        "fullName": "Bo"
+    },
+    "assignedTo": {
+        "userId": "6ae10fa1ae1bb4027d77b424",
+        "fullName": "Eve Dev"
+    },
+    "closedAt": "2026-10-30T20:16:38.601Z",
+    "closedBy": {
+        "userId": "6ae10feeae1bb4027d77b427",
+        "fullName": "Bo"
+    }
+}
+
+3Assign: Eve assigning herself 403. Pat assigning Nate, Pat and Tia 400. An unknown or malformed id 404. Pat to Eve 200 with updatedBy Pat. Quinn handing off as assignee 200.
+
+http://localhost:3000/issues/6ae4f3f336a3738af83f454c/assign
+403
+{
+    "error": "Only a manager, or the person this issue is assigned to, may assign it"
+}
+
+Nate
+400
+{
+    "error": "Issues can only be assigned to a Developer, Business Analyst or Quality Analyst"
+}
+
+400 Pat
+{
+    "error": "Issues can only be assigned to a Developer, Business Analyst or Quality Analyst"
+}
+
+400 Tia
+{
+    "error": "Issues can only be assigned to a Developer, Business Analyst or Quality Analyst"
+}
+
+
+4 Test cases: Quinn unassigned 403, assigned 201 then 200, after the hand-off 403.
+
+
+
+
+
+
+5 Comments: Bo deleting Eve's 403, Eve deleting her own 200, Nate deleting Bo's 403, Tia deleting Bo's 200.
+
+
+
+
+
+
+6 Break-it: the removed rule let Bo edit (200), a forged closedBy was ignored, assigning to a wrong role was 400, Tia could not edit (403), and a wrong CLIENT_ORIGIN produced 403 INVALID_ORIGIN.
 
 Step 10 — Break it on purpose
 
@@ -2940,3 +3148,145 @@ Use the wrong web address. In .env change CLIENT_ORIGIN to http://localhost:9999
     "message": "Invalid origin",
     "code": "INVALID_ORIGIN"
 }
+
+
+
+7 Tests: the five red tests were seen before replacing tests/issues.test.ts. After you replace it, npm test is green, including the provided tests/issueRules.test.ts and tests/ownership.test.ts, and npx tsc --noEmit has no errors.
+
+✓ tests/issueRules.test.ts (5 tests) 7ms
+ ✓ tests/auth.test.ts (4 tests) 88ms
+ ✓ tests/warmup.test.ts (5 tests) 80ms
+ ✓ tests/permissions.test.ts (9 tests) 130ms
+ ✓ tests/ownership.test.ts (14 tests) 150ms
+ ✓ tests/issues.test.ts (33 tests) 462ms
+
+ Test Files  6 passed (6)
+      Tests  70 passed (70)
+   Start at  14:55:58
+   Duration  2.37s (import 76%, transform 11%, tests 10%, setup 2%)
+
+
+
+8 Live: every row of the Step 16 table, including the real name of the cookie.
+
+
+Step 16 
+
+
+GET <url>/health
+
+200
+{
+    "status": "ok"
+}
+
+GET <url>/issues with no cookie (or after signing out)
+401
+{
+    "error": "Please sign in first"
+}
+
+Sign in as Eve: POST <url>/api/auth/sign-in/email, with Origin: <url>
+
+
+200
+{
+    "redirect": false,
+    "token": "aOFQfq1IH0zQyBe74iSStx8qujNlLLBk",
+    "user": {
+        "name": "Eve",
+        "email": "eve@example.com",
+        "emailVerified": false,
+        "createdAt": "2026-10-27T20:54:57.169Z",
+        "updatedAt": "2026-10-28T20:40:59.958Z",
+        "role": "developer",
+        "banned": false,
+        "id": "6ae10fa1ae1bb4027d77b424"
+    }
+}
+__Secure-better-auth.session_token=aOFQfq1IH0zQyBe74iSStx8qujNlLLBk.bTTYnmAytOxJofJpBqUnz5oDbTHGaamGJsqs%2FEh1UWE%3D; Path=/; Secure; HttpOnly; Expires=Fri, 06 Nov 2026 19:42:16 GMT;
+
+
+GET <url>/api/me
+200
+{
+    "userId": "6ae10fa1ae1bb4027d77b424",
+    "fullName": "Eve",
+    "role": "developer"
+}
+
+Sign in as Nate, then POST <url>/issues with a valid body
+403
+{
+    "error": "Your role may not issue:create"
+}
+
+Sign in as Eve, then POST <url>/issues with a valid body
+
+201
+{
+    "title": "Login button misaligned",
+    "description": "Off by 4px on mobile",
+    "stepsToReproduce": "Open on a phone",
+    "priority": "low",
+    "status": "open",
+    "classification": "unclassified",
+    "author": {
+        "userId": "6ae10fa1ae1bb4027d77b424",
+        "fullName": "Eve"
+    },
+    "createdOn": "2026-10-30T19:45:55.604Z",
+    "comments": [],
+    "testCases": [],
+    "timeLog": [],
+    "_id": "6ae4f3f336a3738af83f454c"
+}
+
+Sign in as Bo, then PATCH <url>/issues/<liveIssueId> body {"title":"Bo was here}
+
+403
+{
+    "error": "Only the author may edit this issue"
+}
+
+
+Sign in as Eve, then PATCH <url>/issues/<liveIssueId> body {"title":"Edited on the live site"}
+
+{
+    "_id": "6ae4f3f336a3738af83f454c",
+    "title": "Edited on the live site",
+    "description": "Off by 4px on mobile",
+    "stepsToReproduce": "Open on a phone",
+    "priority": "low",
+    "status": "open",
+    "classification": "unclassified",
+    "author": {
+        "userId": "6ae10fa1ae1bb4027d77b424",
+        "fullName": "Eve"
+    },
+    "createdOn": "2026-10-30T19:45:55.604Z",
+    "comments": [],
+    "testCases": [],
+    "timeLog": [],
+    "updatedAt": "2026-10-30T19:48:36.866Z",
+    "updatedBy": {
+        "userId": "6ae10fa1ae1bb4027d77b424",
+        "fullName": "Eve"
+    }
+}
+
+
+
+POST <url>/api/auth/sign-out with Origin: <url>, then GET <url>/issues
+
+200
+{
+    "success": true
+}
+401
+{
+    "error": "Please sign in first"
+}
+
+
+9 Cleanup: the deletedCount numbers from Step 17.
