@@ -4,7 +4,7 @@ import { Router,Request,Response, NextFunction , RequestHandler } from "express"
 import { error } from "node:console";
 import { Issue} from "../data/issue.js";
 import {createIssueSchema , updateIssueSchema, setStatusSchema, classifyIssueSchema , assignIssueSchema, addCommentSchema, setTestCaseResultSchema, listIssuesQuerySchema, postTimelogSchema, issueIdParamsSchema} from "../schema/issueSchemas.js";
-import { listIssues , getIssueByID , createIssue, updateIssue, deleteIssue , setStatus , setClassify , assignIssue, addComment, deleteComment , addTestCase, setTestCaseResult, listIssuesQuery, postTimeLogEntry, getTimeLogSummary } from "../controllers/issueController.js";
+import { listIssues , getIssueByID , createIssue, updateIssue, deleteIssue , setStatus , setClassify , assignIssue, addComment, deleteComment , addTestCase, setTestCaseResult, listIssuesQuery, postTimeLogEntry, getTimeLogSummary , deleteTestCase} from "../controllers/issueController.js";
 import { validateBody, validateParams, validateQuery } from "../middleware/validate.js";
 import { set } from "zod";
 import { requirePermission } from "../middleware/requirePermission.js";
@@ -79,5 +79,8 @@ issuesRouter.delete("/:id", requirePermission("issue", "delete"), deleteIssue);
 
 issuesRouter.delete("/:id/comments/:commentId",requirePermissionOr("comment","deleteAny",(req)=> canDeleteComment(req.issue, req.params.commentId as string, req.user),"Only the comment's author or a Technical Manager may delete it") ,deleteComment);
 
- 
+ issuesRouter.delete("/:id/test-cases/:testCaseId",requirePermission("testCase","delete"),assigneeOnly, deleteTestCase);
+
+
+
   export default issuesRouter;

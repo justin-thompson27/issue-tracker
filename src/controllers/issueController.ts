@@ -485,3 +485,25 @@ export async function getTimeLogSummary(
   }
 }
 
+export async function deleteTestCase(req: Request, res: Response, next: NextFunction) {
+   
+    const objectId = parseId(req,res);
+    if (!objectId) return;
+    try {
+      const testCaseId = req.params.testCaseId as string;
+      const issues =  getIssuesCollection();
+      const result = await issues.findOneAndUpdate(
+        {_id: objectId},
+        {$pull: {testCases: {_id: testCaseId}}}, 
+        {returnDocument: "after"},
+      );
+    if (!result) {
+      return res.status(404).json({error: "Test case not found"});
+    }
+     res.json(result);
+    } catch (error) {
+      next(error);
+    }
+    
+   
+}

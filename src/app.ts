@@ -14,7 +14,7 @@ import { toNodeHandler } from "better-auth/node";
 import { auth } from "./auth.js";
 import { requireAuth } from "./middleware/requireAuth.js";
 import { usersRouter } from "./routes/users.js";
-
+import triageRouter from "./routes/triage.js";
 
 export const app = express();
 
@@ -41,6 +41,7 @@ app.use("/issues",requireAuth,issuesRouter); //assigns the router to issues so i
 // app.get("*", (req, res) => {
 //   res.sendFile(path.join(import.meta.dirname, "../frontend/dist/index.html"));
 // });
+app.use("/triage", requireAuth, triageRouter);
 app.get("/api/me", requireAuth, (req, res) => {
   res.json({ ...req.user, role: req.role });
 });
