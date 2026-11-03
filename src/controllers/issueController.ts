@@ -491,15 +491,16 @@ export async function deleteTestCase(req: Request, res: Response, next: NextFunc
     if (!objectId) return;
     try {
       const testCaseId = req.params.testCaseId as string;
+      if (req.issue.testCases.find(testCase => testCase._id === testCaseId) === undefined) { //searchs through the test cases of the issue to see if the test case id exists if it doesn't it returns 404
+        return res.status(404).json({error: "Test case not found"});
+      }
       const issues =  getIssuesCollection();
       const result = await issues.findOneAndUpdate(
         {_id: objectId},
-        {$pull: {testCases: {_id: testCaseId}}}, 
+        {$pull: {testCases: {_id: testCaseId}}, $set: {updatedBy: req.user, updatedAt: new Date()}},
         {returnDocument: "after"},
       );
-    if (!result) {
-      return res.status(404).json({error: "Test case not found"});
-    }
+   
      res.json(result);
     } catch (error) {
       next(error);
