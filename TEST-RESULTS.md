@@ -2959,15 +2959,307 @@ Nate
 }
 
 
+http://localhost:3000/issues/64f000000000000000000001/assign
+404
+{
+    "error": "Issue not found"
+}
+200
+{
+    "_id": "6ae24fd0cb1e6baa4958a542",
+    "title": "Login button misaligned",
+    "description": "Off by 4px on mobile",
+    "stepsToReproduce": "Open on a phone",
+    "priority": "low",
+    "status": "closed",
+    "classification": "approved",
+    "author": {
+        "userId": "6ae1101aae1bb4027d77b42a",
+        "fullName": "Quinn"
+    },
+    "createdOn": "2026-10-28T19:41:04.940Z",
+    "comments": [],
+    "testCases": [
+        {
+            "_id": "ca09c72d-1b60-444e-a10b-ba7b4c2ddc5e",
+            "userId": "6ae1101aae1bb4027d77b42a",
+            "passed": true,
+            "createdOn": "2026-10-28T19:41:35.378Z"
+        },
+        {
+            "_id": "4c2b65f8-f8f3-4eb1-8d70-4fc213b22b8d",
+            "userId": "6ae1101aae1bb4027d77b42a",
+            "passed": true,
+            "createdOn": "2026-10-28T21:02:29.769Z"
+        }
+    ],
+    "timeLog": [],
+    "assignedTo": {
+        "userId": "6ae10fa1ae1bb4027d77b424",
+        "fullName": "Eve"
+    },
+    "updatedAt": "2026-10-30T20:28:50.330Z",
+    "updatedBy": {
+        "userId": "6ae11049ae1bb4027d77b42d",
+        "fullName": "Pat"
+    }
+}
+
+
+200 
+{
+    "_id": "6ae24fd0cb1e6baa4958a542",
+    "title": "Login button misaligned",
+    "description": "Off by 4px on mobile",
+    "stepsToReproduce": "Open on a phone",
+    "priority": "low",
+    "status": "closed",
+    "classification": "approved",
+    "author": {
+        "userId": "6ae1101aae1bb4027d77b42a",
+        "fullName": "Quinn"
+    },
+    "createdOn": "2026-10-28T19:41:04.940Z",
+    "comments": [],
+    "testCases": [
+        {
+            "_id": "ca09c72d-1b60-444e-a10b-ba7b4c2ddc5e",
+            "userId": "6ae1101aae1bb4027d77b42a",
+            "passed": true,
+            "createdOn": "2026-10-28T19:41:35.378Z"
+        },
+        {
+            "_id": "4c2b65f8-f8f3-4eb1-8d70-4fc213b22b8d",
+            "userId": "6ae1101aae1bb4027d77b42a",
+            "passed": true,
+            "createdOn": "2026-10-28T21:02:29.769Z"
+        }
+    ],
+    "timeLog": [],
+    "assignedTo": {
+        "userId": "6ae10fa1ae1bb4027d77b424",
+        "fullName": "Eve"
+    },
+    "updatedAt": "2026-10-30T20:30:18.059Z",
+    "updatedBy": {
+        "userId": "6ae1101aae1bb4027d77b42a",
+        "fullName": "Quinn"
+    }
+}
+
+
 4 Test cases: Quinn unassigned 403, assigned 201 then 200, after the hand-off 403.
 
+http://localhost:3000/issues/6ae24fd0cb1e6baa4958a542/test-cases
+403
+{
+    "error": "Only the person this issue is assigned to may do that"
+}
 
-
+201
+{
+    "_id": "6ae24fd0cb1e6baa4958a542",
+    "title": "Login button misaligned",
+    "description": "Off by 4px on mobile",
+    "stepsToReproduce": "Open on a phone",
+    "priority": "low",
+    "status": "closed",
+    "classification": "approved",
+    "author": {
+        "userId": "6ae1101aae1bb4027d77b42a",
+        "fullName": "Quinn"
+    },
+    "createdOn": "2026-10-28T19:41:04.940Z",
+    "comments": [],
+    "testCases": [
+        {
+            "_id": "ca09c72d-1b60-444e-a10b-ba7b4c2ddc5e",
+            "userId": "6ae1101aae1bb4027d77b42a",
+            "passed": true,
+            "createdOn": "2026-10-28T19:41:35.378Z"
+        },
+        {
+            "_id": "4c2b65f8-f8f3-4eb1-8d70-4fc213b22b8d",
+            "userId": "6ae1101aae1bb4027d77b42a",
+            "passed": true,
+            "createdOn": "2026-10-28T21:02:29.769Z"
+        },
+        {
+            "_id": "786f0c55-ce70-4fde-8a76-7affded81bf0",
+            "userId": "6ae1101aae1bb4027d77b42a",
+            "passed": false,
+            "createdOn": "2026-10-30T20:33:07.209Z"
+        }
+    ],
+    "timeLog": [],
+    "assignedTo": {
+        "userId": "6ae1101aae1bb4027d77b42a",
+        "fullName": "Quinn"
+    },
+    "updatedAt": "2026-10-30T20:32:19.542Z",
+    "updatedBy": {
+        "userId": "6ae11049ae1bb4027d77b42d",
+        "fullName": "Pat"
+    }
+}
+200
+{
+    "_id": "6ae24fd0cb1e6baa4958a542",
+    "title": "Login button misaligned",
+    "description": "Off by 4px on mobile",
+    "stepsToReproduce": "Open on a phone",
+    "priority": "low",
+    "status": "closed",
+    "classification": "approved",
+    "author": {
+        "userId": "6ae1101aae1bb4027d77b42a",
+        "fullName": "Quinn"
+    },
+    "createdOn": "2026-10-28T19:41:04.940Z",
+    "comments": [],
+    "testCases": [
+        {
+            "_id": "ca09c72d-1b60-444e-a10b-ba7b4c2ddc5e",
+            "userId": "6ae1101aae1bb4027d77b42a",
+            "passed": true,
+            "createdOn": "2026-10-28T19:41:35.378Z"
+        },
+        {
+            "_id": "4c2b65f8-f8f3-4eb1-8d70-4fc213b22b8d",
+            "userId": "6ae1101aae1bb4027d77b42a",
+            "passed": true,
+            "createdOn": "2026-10-28T21:02:29.769Z"
+        },
+        {
+            "_id": "786f0c55-ce70-4fde-8a76-7affded81bf0",
+            "userId": "6ae1101aae1bb4027d77b42a",
+            "passed": true,
+            "createdOn": "2026-10-30T20:33:07.209Z"
+        }
+    ],
+    "timeLog": [],
+    "assignedTo": {
+        "userId": "6ae1101aae1bb4027d77b42a",
+        "fullName": "Quinn"
+    },
+    "updatedAt": "2026-10-30T20:32:19.542Z",
+    "updatedBy": {
+        "userId": "6ae11049ae1bb4027d77b42d",
+        "fullName": "Pat"
+    }
+}
+403
+{
+    "error": "Only the person this issue is assigned to may do that"
+}
 
 
 
 5 Comments: Bo deleting Eve's 403, Eve deleting her own 200, Nate deleting Bo's 403, Tia deleting Bo's 200.
 
+Bo
+403
+{
+    "error": "Only the comment's author or a Technical Manager may delete it"
+}
+
+Eve
+200
+{
+    "_id": "6ae3b725f053373870baeaf0",
+    "title": "edited by bo",
+    "description": "Off by 4px on mobile",
+    "stepsToReproduce": "Open on a phone",
+    "priority": "low",
+    "status": "closed",
+    "classification": "unclassified",
+    "author": {
+        "userId": "6ae10fa1ae1bb4027d77b424",
+        "fullName": "Eve"
+    },
+    "createdOn": "2026-10-29T21:14:13.779Z",
+    "comments": [
+        {
+            "_id": "fdffc38b-c10c-438f-b531-0b5a220138f8",
+            "userId": "6ae10feeae1bb4027d77b427",
+            "fullName": "Bo",
+            "comment": "I can reproduce this",
+            "createdOn": "2026-10-30T20:39:29.251Z"
+        }
+    ],
+    "testCases": [
+        {
+            "_id": "f4251025-3ae3-49da-b8e7-74ebef6d8e16",
+            "userId": "6ae1101aae1bb4027d77b42a",
+            "passed": true,
+            "createdOn": "2026-10-30T17:56:43.189Z"
+        }
+    ],
+    "timeLog": [],
+    "updatedAt": "2026-10-30T18:19:44.173Z",
+    "updatedBy": {
+        "userId": "6ae11049ae1bb4027d77b42d",
+        "fullName": "Pat"
+    },
+    "assignedTo": {
+        "userId": "6ae10fa1ae1bb4027d77b424",
+        "fullName": "Eve Dev"
+    },
+    "closedAt": "2026-10-30T18:17:22.887Z",
+    "closedBy": {
+        "userId": "6ae10feeae1bb4027d77b427",
+        "fullName": "Bo"
+    }
+}
+
+Nate
+403
+{
+    "error": "Only the comment's author or a Technical Manager may delete it"
+}
+
+
+Tia
+
+200
+{
+    "_id": "6ae3b725f053373870baeaf0",
+    "title": "edited by bo",
+    "description": "Off by 4px on mobile",
+    "stepsToReproduce": "Open on a phone",
+    "priority": "low",
+    "status": "closed",
+    "classification": "unclassified",
+    "author": {
+        "userId": "6ae10fa1ae1bb4027d77b424",
+        "fullName": "Eve"
+    },
+    "createdOn": "2026-10-29T21:14:13.779Z",
+    "comments": [],
+    "testCases": [
+        {
+            "_id": "f4251025-3ae3-49da-b8e7-74ebef6d8e16",
+            "userId": "6ae1101aae1bb4027d77b42a",
+            "passed": true,
+            "createdOn": "2026-10-30T17:56:43.189Z"
+        }
+    ],
+    "timeLog": [],
+    "updatedAt": "2026-10-30T18:19:44.173Z",
+    "updatedBy": {
+        "userId": "6ae11049ae1bb4027d77b42d",
+        "fullName": "Pat"
+    },
+    "assignedTo": {
+        "userId": "6ae10fa1ae1bb4027d77b424",
+        "fullName": "Eve Dev"
+    },
+    "closedAt": "2026-10-30T18:17:22.887Z",
+    "closedBy": {
+        "userId": "6ae10feeae1bb4027d77b427",
+        "fullName": "Bo"
+    }
+}
 
 
 
@@ -3290,3 +3582,12 @@ POST <url>/api/auth/sign-out with Origin: <url>, then GET <url>/issues
 
 
 9 Cleanup: the deletedCount numbers from Step 17.
+
+
+{
+  acknowledged: true,
+  deletedCount: 6
+}
+
+
+**lab 0.5-0.1**

@@ -14,7 +14,7 @@ import { toNodeHandler } from "better-auth/node";
 import { auth } from "./auth.js";
 import { requireAuth } from "./middleware/requireAuth.js";
 import { usersRouter } from "./routes/users.js";
-
+import triageRouter from "./routes/triage.js";
 
 export const app = express();
 
@@ -54,5 +54,5 @@ app.get("/health", (req,res) => { //this is a request handler it gets called for
 });
 
 app.use("/users", requireAuth, usersRouter);
-
+app.use("/triage", requireAuth, triageRouter);
 app.use(errorHandler); // swaps to the error handler if a error is thrown
