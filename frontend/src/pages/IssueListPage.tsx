@@ -30,9 +30,9 @@ export function IssueListPage() {
     }
     load()
     return () => { //this is the clean up function 
-      ignore = true // once this it set to true the code in load will stop before it can set the state to loaded or error because the component has been unmounted and we don't want to set state on an unmounted component
+      ignore = true // once this it set to true the code in load will stop before it can set the state to loaded or error because the component has been unmounted 
     }
-  }, []) //since the array is empty this effect will only run once when the component is mounted and not again when it is updated or unmounted
+  }, []) //since the array is empty this effect will only run once when the component is mounted and not again when it is updated or unmounts (is removed from the screen).
  
   if (state.kind === 'loading') return <p role="status">Loading issues…</p>
   if (state.kind === 'error') return <p role="alert">{state.message}</p>
