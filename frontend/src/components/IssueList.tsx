@@ -6,6 +6,8 @@ type IssueListProps = {
   issues: Issue[]
 }
  
+
+//So, in the function IssueList, it takes a parameter of Issues with the type IssueListProps; the filter is set by setFilter and assigned all by default. When setFilter is called, it changes the value of the filter to match the value of the e.target.value if the value has been deemed acceptable by the IsStatusFilter which is what validates the status filters
 const filters: StatusFilter[] = ['all', 'open', 'in-progress', 'closed']
  
 function isStatusFilter(value: string): value is StatusFilter {

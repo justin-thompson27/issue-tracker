@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { issueSchema } from './types'
-import type { Issue } from './types'
+import type { Issue , Status } from './types'
  
 type FieldProblem = { path: string; message: string }
  
@@ -42,8 +42,46 @@ async function getJson<T>(path: string, schema: z.ZodType<T>, init?: RequestInit
   return schema.parse(await res.json()) //throws an error if the body is wrong because this isn't safe parse otherwise it returns the json body
 }
  
+
+function withBody(method: string, body: unknown): RequestInit {
+  return {
+    method,
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  }
+}
+ 
+export type IssueDraft = {
+  title: string
+  description: string
+  stepsToReproduce: string
+  priority: Issue['priority']
+}
+
  
 export function listIssues(): Promise<Issue[]> {
   return getJson('/issues', z.array(issueSchema)) //z.arrary creates an array of the schemas , if a single issue is sent then it will throw an error because multiple issues are expected
   //get json returns a validated array of issues if they all pass the schema check otherwise it will throw an error
+}
+
+
+export function getIssue(id: string): Promise<Issue> {
+  return getJson(`/issues/${id}`, issueSchema) //returns the json of a issue with a matching id 
+}
+ 
+export function createIssue(draft: IssueDraft): Promise<Issue> {
+  return getJson('/issues', issueSchema, withBody('POST', draft)) //returns a new json body with the new issue that was created and the body is the draft which is the new issue that was created
+}
+ 
+export function updateIssue(id: string, changes: Partial<IssueDraft>): Promise<Issue> {
+  return getJson(`/issues/${id}`, issueSchema, withBody('PATCH', changes)) //returns a new json body with the edited changes the fields changed are only the ones in the issue draft and because it is partial only one of the four is required to be changed per call
+}
+ 
+export function setStatus(id: string, status: Status): Promise<Issue> {
+  return getJson(`/issues/${id}/status`, issueSchema, withBody('PATCH', { status })) //returns a new json body with the edited status
+}
+
+
+export async function deleteIssue(id: string): Promise<void> {
+  await send(`/issues/${id}`, { method: 'DELETE' }) //delete returns nothing because the server doesn't send anything back with the 204 
 }

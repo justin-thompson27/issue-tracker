@@ -1,20 +1,11 @@
-import { useEffect, useState } from 'react'
-import { ApiError, listIssues } from '../api'
-import { IssueList } from '../components/IssueList'
-import type { Issue } from '../types'
- 
 
 
-//A "page" in this project is the component a route draws, and it owns the loading of its own data. It lives in src/pages. The card and the list are pieces: they live in src/components, stay simple, and only draw what they are handed 
-type LoadState =
-  | { kind: 'loading' }
-  | { kind: 'error'; message: string }
-  | { kind: 'loaded'; issues: Issue[] }
 
-  //a page has three states loading , error or loaded 
+
+
  
 export function IssueListPage() {
-  const [state, setState] = useState<LoadState>({ kind: 'loading' }) //default state is loading 
+  const [state, setState] = useState<LoadState>({ kind: 'loading' })
  
   useEffect(() => {
     let ignore = false
@@ -38,4 +29,95 @@ export function IssueListPage() {
   if (state.kind === 'error') return <p role="alert">{state.message}</p>
   if (state.issues.length === 0) return <p>No issues yet. Add the first one.</p>
   return <IssueList issues={state.issues} /> //what this function returns is the array of issues from the loaded state which was assigned to it by the set state function in load 
+}
+
+
+import { useEffect, useState } from 'react'
+import { ApiError, createIssue, deleteIssue, listIssues, setStatus } from '../api'
+import type { IssueDraft } from '../api'
+import { AddIssueForm } from '../components/AddIssueForm'
+import { IssueList } from '../components/IssueList'
+import type { Issue, Status } from '../types'
+ 
+
+
+//A "page" in this project is the component a route draws, and it owns the loading of its own data. It lives in src/pages. The card and the list are pieces: they live in src/components, stay simple, and only draw what they are handed 
+type LoadState =
+  | { kind: 'loading' }
+  | { kind: 'error'; message: string }
+  | { kind: 'loaded'; issues: Issue[] }
+   //a page has three states loading , error or loaded 
+function messageFor(err: unknown): string {
+  return err instanceof ApiError ? err.message : 'Could not reach the server'
+}
+ 
+export function IssueListPage() {
+  const [state, setState] = useState<LoadState>({ kind: 'loading' })  //default state is loading 
+  const [actionError, setActionError] = useState<string | null>(null)
+ 
+  useEffect(() => {
+    let ignore = false
+    const load = async () => {
+      try {
+        const issues = await listIssues()
+        if (!ignore) setState({ kind: 'loaded', issues })
+      } catch (err) {
+        if (!ignore) setState({ kind: 'error', message: messageFor(err) })
+      }
+    }
+    load()
+    return () => {
+      ignore = true
+    }
+  }, [])
+ 
+  function replaceIssues(change: (issues: Issue[]) => Issue[]) {
+    setState((current) =>
+      current.kind === 'loaded' ? { kind: 'loaded', issues: change(current.issues) } : current,
+    )
+  }
+ 
+  async function handleAdd(draft: IssueDraft) {
+    const created = await createIssue(draft)
+    replaceIssues((issues) => [...issues, created])
+  }
+ 
+  async function handleStatusChange(id: string, status: Status) {
+    setActionError(null)
+    try {
+      const updated = await setStatus(id, status)
+      replaceIssues((issues) => issues.map((i) => (i._id === id ? updated : i)))
+    } catch (err) {
+      setActionError(messageFor(err))
+    }
+  }
+ 
+  async function handleDelete(id: string) {
+    setActionError(null)
+    try {
+      await deleteIssue(id)
+      replaceIssues((issues) => issues.filter((i) => i._id !== id))
+    } catch (err) {
+      setActionError(messageFor(err))
+    }
+  }
+ 
+  if (state.kind === 'loading') return <p role="status">Loading issues…</p>
+  if (state.kind === 'error') return <p role="alert">{state.message}</p>
+ 
+  return (
+    <>
+      <AddIssueForm onAdd={handleAdd} />
+      {actionError && <p role="alert">{actionError}</p>}
+      {state.issues.length === 0 ? (
+        <p>No issues yet. Add the first one.</p>
+      ) : (
+        <IssueList
+          issues={state.issues}
+          onStatusChange={handleStatusChange}
+          onDelete={handleDelete}
+        />
+      )}
+    </>
+  )
 }
