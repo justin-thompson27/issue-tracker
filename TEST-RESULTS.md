@@ -3591,3 +3591,42 @@ POST <url>/api/auth/sign-out with Origin: <url>, then GET <url>/issues
 
 
 **lab 0.5-0.1**
+
+
+
+
+
+**lab 06-02**
+
+
+Step 7 — See the three faces of failure
+1 A page that only works when everything is perfect is not finished. Look at each failure on purpose, using DevTools' Network tab (choose Network, then reload the page):
+
+
+two issues request sent by api.ts
+
+
+
+2 Sign out: in the console run fetch('/api/auth/sign-out', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' }), then reload
+
+Issue Tracker
+Please sign in first
+
+
+
+3 Stop your API (Ctrl+C in its terminal) and reload
+
+Issue Tracker
+Request failed (502)
+
+
+
+4 Start the API, sign in again, reload
+
+
+Issue Tracker
+Filter by status
+all
+Showing 19 of 19 issues etc...
+
+
