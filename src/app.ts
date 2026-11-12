@@ -41,6 +41,7 @@ app.use("/issues",requireAuth,issuesRouter); //assigns the router to issues so i
 // app.get("*", (req, res) => {
 //   res.sendFile(path.join(import.meta.dirname, "../frontend/dist/index.html"));
 // });
+app.use("/triage", requireAuth, triageRouter);
 app.get("/api/me", requireAuth, (req, res) => {
   res.json({ ...req.user, role: req.role });
 });
