@@ -3630,3 +3630,146 @@ all
 Showing 19 of 19 issues etc...
 
 
+Step 12 — Use it, as two different people
+Tests prove the page behaves. They cannot tell you whether it feels right. With the dev servers running and yourself signed in:
+
+
+
+
+Add an issue with every field filled in. It appears at the bottom of the list without a reload, and the "Showing" count goes up by one.
+
+
+test title
+open
+
+Priority: medium
+
+Reported by test
+
+Status
+open
+Delete
+
+
+
+
+Submit with the Title empty. You see Title is required and nothing is sent. Check the Network tab to be sure.
+
+
+
+Title
+Title is required
+
+Description
+ggiuguio
+Steps to reproduce
+ggouiugi
+Priority
+medium
+Add issue
+Filter by status
+all
+Showing 20 of 20 issues
+
+
+Change an issue's status with its dropdown. It changes on the page only after the server answers.
+
+
+rshzs
+in-progress
+
+Priority: high
+
+Reported by test
+
+Status
+in-progress
+Delete
+
+
+rshzs
+open
+
+Priority: high
+
+Reported by test
+
+Status
+open
+Delete
+
+
+
+
+
+Click Delete, then Cancel. Nothing happens. Click Delete, then Yes, delete. The issue disappears.
+
+
+Request URL
+http://localhost:5173/issues/6afb539a21b7d5d63e48373f
+Request method
+DELETE
+Status code
+204 No Content
+Remote address
+[::1]:5173
+Referrer policy
+strict-origin-when-cross-origin
+access-control-allow-origin
+http://localhost:5173
+connection
+close
+date
+Mon, 16 Nov 2026 20:27:28 GMT
+vary
+Origin
+x-powered-by
+Express
+accept
+*/*
+accept-encoding
+gzip, deflate, br, zstd
+accept-language
+en-US,en;q=0.9
+cache-control
+no-cache
+connection
+keep-alive
+cookie
+better-auth.session_token=A1Up546DAkISee0bfbrPh9ypn77Juv33.Fd926ISgZvVZPPtMjREfE0BJgDwXc5c7EqMV60xV%2Bmc%3D
+host
+localhost:5173
+origin
+http://localhost:5173
+pragma
+no-cache
+referer
+http://localhost:5173/
+sec-ch-ua
+"Not:A-Brand";v="8", "Chromium";v="156", "Google Chrome";v="156"
+sec-ch-ua-mobile
+?1
+sec-ch-ua-platform
+"Android"
+sec-fetch-dest
+empty
+sec-fetch-mode
+cors
+sec-fetch-site
+same-origin
+user-agent
+Mozilla/5.0 (Linux; Android 16; Pixel 10) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Mobile Safari/537.36
+
+
+Sign out with the console snippet from Step 7, sign in as a different account (one that did not create an issue, or one with a lower role), and try to change or delete someone else's issue. You should see your own API's message in an alert, and the issue must still be on the page. That is your Module 5 ownership and role rules showing through the front end. If your API lets everyone do everything, you have a Module 5 bug.
+
+
+
+Your role may not issue:delete
+
+
+
+Write one line for each in TEST-RESULTS.md. Then commit Part 2:
+
+
+

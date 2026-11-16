@@ -72,7 +72,7 @@ describe('IssueList', () => {
 
   it('passes onSelect through to each card, using the _id', async () => {
     const onSelect = vi.fn()
-    render(<IssueList {...({ issues, onSelect } as Parameters<typeof IssueList>[0])} />)
+    render(<IssueList issues={issues} onSelect={onSelect} />)
     const views = screen.getAllByRole('button', { name: 'View' })
     expect(views).toHaveLength(4)
     await userEvent.click(views[1]!)
