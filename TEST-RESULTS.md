@@ -3764,12 +3764,100 @@ Mozilla/5.0 (Linux; Android 16; Pixel 10) AppleWebKit/537.36 (KHTML, like Gecko)
 Sign out with the console snippet from Step 7, sign in as a different account (one that did not create an issue, or one with a lower role), and try to change or delete someone else's issue. You should see your own API's message in an alert, and the issue must still be on the page. That is your Module 5 ownership and role rules showing through the front end. If your API lets everyone do everything, you have a Module 5 bug.
 
 
-
 Your role may not issue:delete
 
 
-
-Write one line for each in TEST-RESULTS.md. Then commit Part 2:
-
+Step 14
 
 
+
+
+
+
+
+Step 15 Break it on purpose
+
+1    In send in api.ts, change if (!res.ok) { to if (false) { (stop looking at res.ok).
+
+
+Test Files  5 failed | 4 passed (9)
+      Tests  10 failed | 64 passed (74)
+   Start at  14:07:06
+   Duration  20.80s (environment 81%, tests 12%, setup 4%, import 2%, transform 1%)
+
+Environment  jsdom was created 9 times · 96.00s total, 81% of tracked time
+             create it once per worker with pool: 'vmThreads' (keeps per-file isolation) or isolate: false (shares it across files)
+             learn more: https://vitest.dev/guide/improving-performance#test-environments
+
+
+
+
+2  
+
+
+In handleDelete, delete the line replaceIssues((issues) => issues.filter((i) => i._id !== id)).
+
+
+
+ Test Files  1 failed | 8 passed (9)
+      Tests  1 failed | 73 passed (74)
+   Start at  14:10:39
+   Duration  7.29s (tests 41%, environment 40%, setup 11%, import 7%, transform 1%)
+
+Environment  jsdom was created 9 times · 11.83s total, 40% of tracked time
+             create it once per worker with pool: 'vmThreads' (keeps per-file isolation) or isolate: false (shares it across files)
+             learn more: https://vitest.dev/guide/improving-performance#test-environments
+
+
+3  
+
+In App.tsx, change edit/:id to issues/:id and change the navigate address to match. 
+
+
+I got 8 test failed instead of 7
+
+ Test Files  1 failed | 8 passed (9)
+      Tests  8 failed | 66 passed (74)
+   Start at  14:12:21
+   Duration  9.13s (tests 49%, environment 35%, setup 9%, import 6%, transform 1%)
+
+
+   4
+
+
+
+C:\Users\Ranken\Desktop\finalProject\issue-tracker\frontend>npx tsc --noEmit -p tsconfig.app.json
+src/components/IssueCard.tsx:21:61 - error TS2339: Property 'id' does not exist on type '{ _id: string; title: string; description: string; stepsToReproduce: string; priority: "high" | "low" | "medium"; status: "closed" | "in-progress" | "open"; author: { userId: string; fullName: string; }; assignedTo?: { ...; } | undefined; createdOn: string; }'.
+
+21         <button type="button" onClick={() => onSelect(issue.id)}>
+                                                               ~~
+
+
+Found 1 error in src/components/IssueCard.tsx:21
+
+   
+ Test Files  3 failed | 6 passed (9)
+      Tests  3 failed | 71 passed (74)
+   Start at  14:16:03
+   Duration  7.31s (tests 43%, environment 38%, setup 11%, import 7%, transform 1%)
+
+    Isolate  9 workers spawned · ~1.50s startup each (spawn + environment, per file)
+             at least ~429ms faster with isolate: false — reuses workers across files instead of one per file
+
+
+
+
+5 
+
+In AddIssueForm.tsx, remove the line e.preventDefault().
+
+
+
+ Test Files  9 passed (9)
+      Tests  74 passed (74)
+   Start at  14:17:48
+   Duration  6.52s (environment 43%, tests 38%, setup 11%, import 8%, transform 1%)
+
+Environment  jsdom was created 9 times · 11.89s total, 43% of tracked time
+             create it once per worker with pool: 'vmThreads' (keeps per-file isolation) or isolate: false (shares it across files)
+             learn more: https://vitest.dev/guide/improving-performance#test-environments
