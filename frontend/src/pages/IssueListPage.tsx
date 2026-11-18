@@ -6,6 +6,10 @@ import { IssueList } from '../components/IssueList'
 import type { Issue, Status } from '../types'
 
 
+type IssueListPageProps = {
+  onSelect?: (id: string) => void
+}
+ 
 
 //A "page" in this project is the component a route draws, and it owns the loading of its own data. It lives in src/pages. The card and the list are pieces: they live in src/components, stay simple, and only draw what they are handed 
 type LoadState =
@@ -17,7 +21,7 @@ function messageFor(err: unknown): string {
   return err instanceof ApiError ? err.message : 'Could not reach the server'
 }
  
-export function IssueListPage() {
+export function IssueListPage({onSelect}: IssueListPageProps) {
   const [state, setState] = useState<LoadState>({ kind: 'loading' })  //default state is loading 
   const [actionError, setActionError] = useState<string | null>(null)
  
@@ -83,6 +87,7 @@ export function IssueListPage() {
         <IssueList
           issues={state.issues}
           onStatusChange={handleStatusChange}
+          onSelect={onSelect}
           onDelete={handleDelete}
         />
       )}
