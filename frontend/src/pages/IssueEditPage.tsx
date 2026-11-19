@@ -42,7 +42,7 @@ export function IssueEditPage() {
  
   return (
     //link moves back to the home page when clicked 
-    <section>
+    <section className="flex flex-col gap-4">
       <h2>Edit issue</h2>
       <Link to="/">Back to all issues</Link> 
       {state.kind === 'loading' && <p role="status">Loading issue…</p>}
