@@ -3895,3 +3895,10 @@ C:\Users\Ranken\Desktop\finalProject\issue-tracker>npx tsc --noEmit
 
 C:\Users\Ranken\Desktop\finalProject\issue-tracker>
 
+**Lab 06-03**
+
+
+Step 5
+
+The screen adjusted into one col
+mun which suits a phone's view better.
