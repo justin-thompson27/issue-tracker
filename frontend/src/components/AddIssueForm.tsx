@@ -81,11 +81,13 @@ export function AddIssueForm({
  
   return (
     <form onSubmit={form.handleSubmit(onValid)} noValidate className="rounded-lg border p-4">
-      <FieldGroup>
+      <FieldGroup> 
         <Controller
+        //organizes the controllers visually
+        //connects the input field to react 
           name="title" //identifies the field in the form and is used to get the value of the field and check it against the schema
-          control={form.control}
-          render={({ field, fieldState }) => (
+          control={form.control} //points the controller to the form that was created with useForm
+          render={({ field, fieldState }) => ( //renders the field component which acts like a div for the label and input if the fieldstate is invalid tailwind will change the look of the field and turn the error messages visible
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel htmlFor="issue-title">Title</FieldLabel>
               <Input {...field} id="issue-title" aria-invalid={fieldState.invalid} />
