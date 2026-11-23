@@ -1,7 +1,7 @@
 import { useState } from 'react'
+import { NativeSelect, NativeSelectOption } from '@/components/ui/native-select'
 import type { Issue, Status, StatusFilter } from '../types'
 import { IssueCard } from './IssueCard'
-
  
 type IssueListProps = {
   issues: Issue[]
@@ -10,9 +10,6 @@ type IssueListProps = {
   onDelete?: (id: string) => void
 }
  
-
-
-//So, in the function IssueList, it takes a parameter of Issues with the type IssueListProps; the filter is set by setFilter and assigned all by default. When setFilter is called, it changes the value of the filter to match the value of the e.target.value if the value has been deemed acceptable by the IsStatusFilter which is what validates the status filters
 const filters: StatusFilter[] = ['all', 'open', 'in-progress', 'closed']
  
 function isStatusFilter(value: string): value is StatusFilter {
@@ -31,27 +28,27 @@ export function IssueList({ issues, onSelect, onStatusChange, onDelete }: IssueL
   const shown = filter === 'all' ? issues : issues.filter((i) => i.status === filter)
  
   return (
-    <section>
-      <label>
+    <section className="flex flex-col gap-4">
+      <label className="flex items-center gap-2 text-sm">
         Filter by status
-        <select value={filter} onChange={handleFilterChange}>
+        <NativeSelect value={filter} onChange={handleFilterChange}>
           {filters.map((f) => (
-            <option key={f} value={f}>
+            <NativeSelectOption key={f} value={f}>
               {f}
-            </option>
+            </NativeSelectOption>
           ))}
-        </select>
+        </NativeSelect>
       </label>
-      <p>
+      <p className="text-sm text-muted-foreground">
         Showing {shown.length} of {issues.length} issues
       </p>
       {shown.length === 0 ? (
-        <p>No issues to show.</p>
+        <p className="text-sm text-muted-foreground">No issues to show.</p>
       ) : (
-        <ul>
+        <ul className="grid gap-4 sm:grid-cols-2">
           {shown.map((issue) => (
             <li key={issue._id}>
-              <IssueCard //component name then parameter(the prop being passed) name then the the variable containing the value that you want to pass.
+              <IssueCard
                 issue={issue}
                 onSelect={onSelect}
                 onStatusChange={onStatusChange}
@@ -64,4 +61,3 @@ export function IssueList({ issues, onSelect, onStatusChange, onDelete }: IssueL
     </section>
   )
 }
-

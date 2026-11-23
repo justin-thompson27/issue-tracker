@@ -1,7 +1,10 @@
 import { z } from 'zod'
 import { issueSchema } from './types'
 import type { Issue , Status } from './types'
+import type { CreateIssueInput } from './schemas/issueForm'
  
+
+
 type FieldProblem = { path: string; message: string }
  
 export class ApiError extends Error {
@@ -51,12 +54,7 @@ function withBody(method: string, body: unknown): RequestInit {
   }
 }
  
-export type IssueDraft = {
-  title: string
-  description: string
-  stepsToReproduce: string
-  priority: Issue['priority']
-}
+export type IssueDraft =  CreateIssueInput;
 
  
 export function listIssues(): Promise<Issue[]> {
